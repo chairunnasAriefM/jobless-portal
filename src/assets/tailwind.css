@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Barlow";
+  src: url("/fonts/Barlow-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraBold";
+  src: url("/fonts/Poppins-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "Jost";
+  src: url("/fonts/Jost-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Muli";
+  src: url("/fonts/Muli.ttf");
+}
+
+@font-face {
+  font-family: "Muli-ExtraLight";
+  src: url("/fonts/Muli-ExtraLight.ttf");
+}
+
+@font-face {
+  font-family: "Muli-Light";
+  src: url("/fonts/Muli-Light.ttf");
+}
+
+@theme {
+
+  --font-barlow: "Barlow", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-poppins-: "Poppins-ExtraBold", sans-serif;
+  --font-jost: "Jost", sans-serif;
+  --font-muli: "Muli", sans-serif;
+  --font-muli-Extralight: "Muli-ExtraLight", sans-serif;
+  --font-muli-Light: "Muli-Light", sans-serif;
+
+  --color-latar: #f3f4f6;
+  --color-teks: #374151;
+  --color-teks-samping: #6b7280;
+  --color-garis: #e5e7eb;
+  --color-hijau: #00b074;
+  --color-merah: #ef4444;
+  --color-biru: #3b82f6;
+  --color-kuning: #f59e0b;
+}
+
+body {
+  @apply font-barlow;
+}
