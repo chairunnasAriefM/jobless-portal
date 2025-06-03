@@ -55,6 +55,40 @@
   --color-kuning: #f59e0b;
 }
 
+/* Animasi Marquee untuk TrustedCompanies */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  /* Sembunyikan bagian logo yang keluar dari container */
+}
+
+.marquee-content {
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+  /* Jeda animasi saat kursor mouse di atasnya */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+    /* Mulai dari posisi normal */
+  }
+
+  100% {
+    transform: translateX(-50%);
+    /* Bergerak ke kiri sejauh setengah dari total lebar */
+  }
+}
+
 body {
   @apply font-barlow;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

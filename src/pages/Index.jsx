@@ -8,6 +8,8 @@ import Testimonials from '../components/Testimonials';
 import CallToAction from '../components/CallToAction';
 import Footer from '../components/Footer';
 
+// yes i copy the flexjob website
+
 
 export default function Index() {
     return (
