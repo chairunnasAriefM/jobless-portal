@@ -6,7 +6,7 @@ const CallToAction = () => {
     <section className="py-20 bg-slate-700 text-white" id="signup"> {/* Menambahkan ID untuk Daftar */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-          Siap Mengembangkan <span className="text-orange-400">Karir & Bisnis UKM</span> Anda?
+          Siap Mengembangkan <span className="text-orange-400">Karir & Bisnis </span> Anda?
         </h2>
         <p className="text-lg sm:text-xl text-slate-200 mb-10 max-w-2xl mx-auto">
           Bergabunglah dengan JoblessPortal sekarang. Proses mudah, cepat, dan efisien untuk semua kebutuhan rekrutmen dan pencarian kerja Anda.

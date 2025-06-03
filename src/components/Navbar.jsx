@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react'; // Briefcase bisa ditambahkan jika ada menu "Untuk Perusahaan"
 
 const Logo = () => (
-  <a href="#" className="text-2xl font-bold text-white">
+  <a href="/" className="text-2xl font-bold text-white">
     Jobless<span className="text-orange-500">Portal</span> {/* Nama Portal Anda */}
   </a>
 );
@@ -15,7 +15,7 @@ const Navbar = () => {
     { href: '#find-jobs', text: 'Cari Lowongan' },
     { href: '#how-it-works', text: 'Cara Kerja' }, // Mengganti How It Works
     { href: '#career-advice', text: 'Tips Karir' }, // Mengganti Career Advice
-    { href: '#for-employers-nav', text: 'Untuk Perusahaan (UKM)' }, // Mengganti For Employers
+    { href: '#for-employers-nav', text: 'Untuk Perusahaan' }, // Mengganti For Employers
   ];
 
   return (

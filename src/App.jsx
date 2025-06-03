@@ -1,35 +1,40 @@
 import './assets/tailwind.css';
 import { Routes, Route } from 'react-router-dom';
-import { Suspense } from 'react';
+// import { Suspense } from 'react'; // Suspense bisa diaktifkan jika menggunakan React.lazy
 import React from 'react';
-// import Loading from './components/Loading';
-import Index from './pages/Index';
 
-// const JobApplication = React.lazy(() => import("./pages/JobApplication"))
+// Layouts
+import MainLayout from './layouts/MainLayout';
+
+// Pages
+import Index from './pages/Index'; // Halaman utama Anda
+import CompanyRegistrationPage from './pages/CompanyRegistrationPage'; // Halaman pendaftaran perusahaan dari sebelumnya
+
+// Contoh jika menggunakan React.lazy untuk halaman lain:
+// const AboutPage = React.lazy(() => import("./pages/AboutPage"));
+// const JobDetailsPage = React.lazy(() => import("./pages/JobDetailsPage"));
+
+// Jika Anda memiliki komponen Loading:
+// import Loading from './components/Loading';
 
 function App() {
   return (
-    // <Suspense fallback={<Loading />}>
+    // <Suspense fallback={<Loading />}> {/* Aktifkan Suspense jika ada React.lazy */}
     <Routes>
-      {/* <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/users" element={<User />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:id" element={<ProductDetail />} />
-        </Route>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
-        </Route> */}
-
-      <Route>
-        {/* <Route path="/JobApplication" element={<JobApplication />} /> */}
+      {/* Rute yang menggunakan MainLayout */}
+      <Route element={<MainLayout />}>
         <Route path="/" element={<Index />} />
+        <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+        {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
+        {/*
+        <Route path="/tentang-kami" element={<AboutPage />} />
+        <Route path="/lowongan/:jobId" element={<JobDetailsPage />} />
+        */}
       </Route>
 
+      {/* Rute lain yang mungkin tidak menggunakan MainLayout (misalnya halaman login khusus) */}
+      {/* <Route path="/login" element={<LoginPage />} /> 
+      */}
     </Routes>
     // </Suspense>
   );

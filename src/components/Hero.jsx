@@ -15,11 +15,11 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6">
           Temukan <span className="text-orange-400">Peluang Karir</span> & Talenta Terbaik
-          <br className="hidden md:block" /> untuk <span className="text-orange-400">UKM Anda</span>
+          <br className="hidden md:block" /> untuk <span className="text-orange-400">Perusahaan Anda</span>
         </h1>
         <p className="text-lg sm:text-xl md:text-2xl text-slate-200 mb-10 max-w-3xl mx-auto">
           Platform job portal modern yang dirancang untuk kemudahan dan efisiensi.
-          Bergabunglah dengan ratusan UKM dan pencari kerja lokal.
+          Bergabunglah dengan ratusan Perusahaan dan pencari kerja lokal.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <a
@@ -29,10 +29,10 @@ const Hero = () => {
             Cari Lowongan Sekarang
           </a>
           <a
-            href="#for-employers-hero" // Arahkan ke section khusus untuk perusahaan
+            href="/daftar-perusahaan" // Arahkan ke section khusus untuk perusahaan
             className="bg-transparent hover:bg-slate-600 text-slate-100 font-semibold py-3.5 px-8 border-2 border-slate-300 hover:border-slate-400 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
           >
-            Rekrut Talenta (Untuk UKM)
+            Rekrut Talenta
           </a>
         </div>
 

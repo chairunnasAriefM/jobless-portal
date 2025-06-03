@@ -16,13 +16,13 @@ const Footer = () => {
     'Tentang JoblessPortal': [ // Diubah dari About JobPortal
       { text: 'Tentang Kami', href: '#' },
       { text: 'Cara Kerja Platform', href: '#' }, // Disesuaikan
-      { text: 'Layanan Premium UKM', href: '#' }, // Ditambahkan
+      { text: 'Layanan Premium ', href: '#' }, // Ditambahkan
       { text: 'Karir di JoblessPortal', href: '#' },
       { text: 'Hubungi Kami', href: '#' },
     ],
     'Sumber Daya': [ // Diubah dari Job Search Resources
       { text: 'Tips Sukses Melamar Kerja', href: '#' },
-      { text: 'Panduan Rekrutmen Efektif (UKM)', href: '#' }, // Ditambahkan
+      { text: 'Panduan Rekrutmen Efektif ', href: '#' }, // Ditambahkan
       { text: 'Jasa Penyusunan CV Profesional', href: '#' }, // Ditambahkan
       { text: 'Blog & Artikel Karir', href: '#' },
       { text: 'FAQ (Tanya Jawab)', href: '#' }, // Ditambahkan
