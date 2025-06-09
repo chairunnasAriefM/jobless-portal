@@ -30,7 +30,7 @@ function App() {
         <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
         <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
         <Route path="/lowongan/hasil" element={<JobSearchResultsPage />} />
-        <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+        {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
         {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
         {/*
         <Route path="/tentang-kami" element={<AboutPage />} />
