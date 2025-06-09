@@ -11,6 +11,7 @@ import Index from './pages/Index';
 import JobSearchWizard from './pages/JobSearchWizard'; // Halaman wizard preferensi
 import JobSearchResultsPage from './pages/JobSearchResultsPage'; // Halaman hasil pencarian
 import CompanyRegistrationPage from './pages/CompanyRegistrationPage'; // Halaman pendaftaran perusahaan
+import JobDetail from './pages/JobDetail';
 
 
 // Contoh jika menggunakan React.lazy untuk halaman lain:
@@ -30,6 +31,7 @@ function App() {
         <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
         <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
         <Route path="/lowongan/hasil" element={<JobSearchResultsPage />} />
+        <Route path="/lowongan/:id" element={<JobDetail />} />
         {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
         {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
         {/*

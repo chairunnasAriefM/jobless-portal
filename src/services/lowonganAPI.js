@@ -50,6 +50,26 @@ export const lowonganAPI = {
         return response.data;
     },
 
+    async fetchLowonganById(id) {
+        if (!id) return null;
+
+        // Query untuk mengambil semua kolom dari lowongan dan data relasinya
+        const selectQuery = 'select=*,perusahaan(*),tipe_pekerjaan(*)';
+
+        // Header khusus untuk meminta Supabase mengembalikan satu objek, bukan array
+        const singleObjectHeader = {
+            ...headers,
+            Accept: 'application/vnd.pgrst.object+json'
+        };
+
+        const response = await axios.get(
+            `${API_URL}?lowongan_id=eq.${id}&${selectQuery}`,
+            { headers: singleObjectHeader }
+        );
+
+        return response.data;
+    },
+
 
     async createLowongan(data) {
         const response = await axios.post(API_URL, data, { headers })
