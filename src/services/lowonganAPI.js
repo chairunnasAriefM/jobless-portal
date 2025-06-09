@@ -11,16 +11,45 @@ const headers = {
 
 export const lowonganAPI = {
 
-    async fetchLowongan(limit = null) {
-        // PERBAIKAN DI SINI: Gunakan nama tabel huruf kecil
-        const selectQuery = 'select=lowongan_id,judul,lokasi,tanggal_diposting,perusahaan(nama_perusahaan),tipe_pekerjaan(nama_tipe)';
+    async fetchLowongan(filters = {}) {
+        const { searchTerm, searchLocation, jobType, sortBy } = filters;
 
-        const orderQuery = 'order=tanggal_diposting.desc';
-        const limitQuery = limit ? `&limit=${limit}` : '';
+        // Query dasar untuk mengambil data dan relasinya
+        let query = 'select=lowongan_id,judul,lokasi,tanggal_diposting,perusahaan(nama_perusahaan),tipe_pekerjaan(nama_tipe)';
 
-        const response = await axios.get(`${API_URL}?${selectQuery}&${orderQuery}${limitQuery}`, { headers })
-        return response.data
+        // Filter Pencarian (kata kunci) - Mencari di judul DAN nama perusahaan
+        if (searchTerm) {
+            query += `&or=(judul.ilike.%${searchTerm}%,perusahaan.nama_perusahaan.ilike.%${searchTerm}%)`;
+        }
+
+        // Filter Lokasi
+        if (searchLocation) {
+            query += `&lokasi.ilike.%${searchLocation}%`;
+        }
+
+        // Filter Tipe Pekerjaan
+        if (jobType && jobType !== 'Semua') {
+            query += `&tipe_pekerjaan.nama_tipe=eq.${jobType}`;
+        }
+
+        // Menambahkan filter lain di sini jika ada (experience, education, dll)
+        // Contoh:
+        // if (filters.experienceLevel && filters.experienceLevel !== 'Semua') {
+        //   query += `&experience_level=eq.${filters.experienceLevel}`;
+        // }
+
+        // Logika Pengurutan (Sort)
+        if (sortBy === 'date_desc') {
+            query += '&order=tanggal_diposting.desc';
+        } else {
+            // Default sort (bisa berdasarkan relevansi atau tanggal posting)
+            query += '&order=tanggal_diposting.desc';
+        }
+
+        const response = await axios.get(`${API_URL}?${query}`, { headers });
+        return response.data;
     },
+
 
     async createLowongan(data) {
         const response = await axios.post(API_URL, data, { headers })
