@@ -1,37 +1,79 @@
+// src/App.jsx
+
+import './api/axiosConfig';
 import './assets/tailwind.css';
 import { Routes, Route } from 'react-router-dom';
-import { Suspense } from 'react';
-import React from 'react';
-// import Loading from './components/Loading';
-import Index from './pages/Index';
+import React, { Suspense, lazy } from 'react'; // Impor Suspense dan lazy
+import { Loader2 } from 'lucide-react';
 
-// const JobApplication = React.lazy(() => import("./pages/JobApplication"))
+import ScrollToTop from './components/ScrollToTop';
+
+// Layouts
+import MainLayout from './layouts/MainLayout';
+
+// komponen Loading 
+const PageLoader = () => (
+  <div className="flex justify-center items-center h-screen w-screen bg-slate-50">
+    <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
+  </div>
+);
+
+// pages
+const Index = lazy(() => import('./pages/Index'));
+const JobSearchWizard = lazy(() => import('./pages/JobSearchWizard'));
+const JobSearchResultsPage = lazy(() => import('./pages/JobSearchResultsPage'));
+const CompanyRegistrationPage = lazy(() => import('./pages/CompanyRegistrationPage'));
+const JobDetail = lazy(() => import('./pages/JobDetail'));
+
+
+// Contoh jika menggunakan React.lazy untuk halaman lain:
+// const AboutPage = React.lazy(() => import("./pages/AboutPage"));
+// const JobDetailsPage = React.lazy(() => import("./pages/JobDetailsPage"));
+
+// Jika Anda memiliki komponen Loading:
+// import Loading from './components/Loading';
 
 function App() {
   return (
-    // <Suspense fallback={<Loading />}>
-    <Routes>
-      {/* <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/users" element={<User />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:id" element={<ProductDetail />} />
-        </Route>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot" element={<Forgot />} />
-        </Route> */}
+    // <Suspense fallback={<Loading />}> {/* Aktifkan Suspense jika ada React.lazy */}
+    // <Routes>
+    //   {/* Rute yang menggunakan MainLayout */}
+    //   <Route element={<MainLayout />}>
+    //     <Route path="/" element={<Index />} />
+    //     <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+    //     <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
+    //     <Route path="/lowongan" element={<JobSearchResultsPage />} />
+    //     <Route path="/lowongan/:id" element={<JobDetail />} />
+    //     {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
+    //     {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
+    //     {/*
+    //     <Route path="/tentang-kami" element={<AboutPage />} />
+    //     <Route path="/lowongan/:jobId" element={<JobDetailsPage />} />
+    //     */}
+    //   </Route>
 
-      <Route>
-        {/* <Route path="/JobApplication" element={<JobApplication />} /> */}
-        <Route path="/" element={<Index />} />
-      </Route>
-
-    </Routes>
+    //   {/* Rute lain yang mungkin tidak menggunakan MainLayout (misalnya halaman login khusus) */}
+    //   {/* <Route path="/login" element={<LoginPage />} /> 
+    //   */}
+    // </Routes>
     // </Suspense>
+
+
+    <Suspense fallback={<PageLoader />}>
+      <ScrollToTop />
+      <Routes>
+        {/* Rute yang menggunakan MainLayout */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+          <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
+          <Route path="/lowongan" element={<JobSearchResultsPage />} />
+          <Route path="/lowongan/:id" element={<JobDetail />} />
+        </Route>
+
+        {/* Rute lain bisa ditambahkan di sini */}
+      </Routes>
+    </Suspense>
   );
 }
 
