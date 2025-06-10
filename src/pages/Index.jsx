@@ -8,13 +8,13 @@ import CallToAction from '../components/CallToAction';
 
 export default function Index() {
     return (
-        <>
+        <div id='home'>
             <Hero />
             <TrustedCompanies />
             <FeaturedJobs />
             <WhyChooseUs />
             <Testimonials />
             <CallToAction />
-        </>
+        </div>
     );
 }

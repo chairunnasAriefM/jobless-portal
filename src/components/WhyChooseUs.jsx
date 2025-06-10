@@ -37,7 +37,7 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section id="learn-more" className="py-16 bg-white"> {/* Ubah background agar kontras */}
+    <section id="why-choose-us" className="py-16 bg-white"> {/* Ubah background agar kontras */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12" id="how-it-works"> {/* Menambahkan ID untuk Cara Kerja */}
           <h2 className="text-3xl md:text-4xl font-bold text-slate-800">

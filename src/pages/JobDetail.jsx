@@ -64,7 +64,7 @@ const JobDetail = () => {
                 <nav className="text-sm mb-6 text-slate-600" aria-label="Breadcrumb">
                     <ol className="list-none p-0 inline-flex items-center">
                         <li className="flex items-center"><Link to="/" className="hover:text-orange-500">Beranda</Link><ChevronDown size={14} className="mx-1 transform -rotate-90" /></li>
-                        <li className="flex items-center"><Link to="/jobs" className="hover:text-orange-500">Lowongan</Link><ChevronDown size={14} className="mx-1 transform -rotate-90" /></li>
+                        <li className="flex items-center"><Link to="/lowongan" className="hover:text-orange-500">Lowongan</Link><ChevronDown size={14} className="mx-1 transform -rotate-90" /></li>
                         <li className="flex items-center"><span className="text-slate-500 line-clamp-1">{job.judul}</span></li>
                     </ol>
                 </nav>

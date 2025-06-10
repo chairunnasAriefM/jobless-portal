@@ -1,17 +1,29 @@
+// src/App.jsx
+
+import './api/axiosConfig';
 import './assets/tailwind.css';
 import { Routes, Route } from 'react-router-dom';
-// import { Suspense } from 'react'; // Suspense bisa diaktifkan jika menggunakan React.lazy
-import React from 'react';
+import React, { Suspense, lazy } from 'react'; // Impor Suspense dan lazy
+import { Loader2 } from 'lucide-react';
+
+import ScrollToTop from './components/ScrollToTop';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
 
-// Pages
-import Index from './pages/Index';
-import JobSearchWizard from './pages/JobSearchWizard'; // Halaman wizard preferensi
-import JobSearchResultsPage from './pages/JobSearchResultsPage'; // Halaman hasil pencarian
-import CompanyRegistrationPage from './pages/CompanyRegistrationPage'; // Halaman pendaftaran perusahaan
-import JobDetail from './pages/JobDetail';
+// komponen Loading 
+const PageLoader = () => (
+  <div className="flex justify-center items-center h-screen w-screen bg-slate-50">
+    <Loader2 className="h-12 w-12 animate-spin text-orange-500" />
+  </div>
+);
+
+// pages
+const Index = lazy(() => import('./pages/Index'));
+const JobSearchWizard = lazy(() => import('./pages/JobSearchWizard'));
+const JobSearchResultsPage = lazy(() => import('./pages/JobSearchResultsPage'));
+const CompanyRegistrationPage = lazy(() => import('./pages/CompanyRegistrationPage'));
+const JobDetail = lazy(() => import('./pages/JobDetail'));
 
 
 // Contoh jika menggunakan React.lazy untuk halaman lain:
@@ -24,27 +36,44 @@ import JobDetail from './pages/JobDetail';
 function App() {
   return (
     // <Suspense fallback={<Loading />}> {/* Aktifkan Suspense jika ada React.lazy */}
-    <Routes>
-      {/* Rute yang menggunakan MainLayout */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Index />} />
-        <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
-        <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
-        <Route path="/lowongan/hasil" element={<JobSearchResultsPage />} />
-        <Route path="/lowongan/:id" element={<JobDetail />} />
-        {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
-        {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
-        {/*
-        <Route path="/tentang-kami" element={<AboutPage />} />
-        <Route path="/lowongan/:jobId" element={<JobDetailsPage />} />
-        */}
-      </Route>
+    // <Routes>
+    //   {/* Rute yang menggunakan MainLayout */}
+    //   <Route element={<MainLayout />}>
+    //     <Route path="/" element={<Index />} />
+    //     <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+    //     <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
+    //     <Route path="/lowongan" element={<JobSearchResultsPage />} />
+    //     <Route path="/lowongan/:id" element={<JobDetail />} />
+    //     {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
+    //     {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
+    //     {/*
+    //     <Route path="/tentang-kami" element={<AboutPage />} />
+    //     <Route path="/lowongan/:jobId" element={<JobDetailsPage />} />
+    //     */}
+    //   </Route>
 
-      {/* Rute lain yang mungkin tidak menggunakan MainLayout (misalnya halaman login khusus) */}
-      {/* <Route path="/login" element={<LoginPage />} /> 
-      */}
-    </Routes>
+    //   {/* Rute lain yang mungkin tidak menggunakan MainLayout (misalnya halaman login khusus) */}
+    //   {/* <Route path="/login" element={<LoginPage />} /> 
+    //   */}
+    // </Routes>
     // </Suspense>
+
+
+    <Suspense fallback={<PageLoader />}>
+      <ScrollToTop />
+      <Routes>
+        {/* Rute yang menggunakan MainLayout */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+          <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
+          <Route path="/lowongan" element={<JobSearchResultsPage />} />
+          <Route path="/lowongan/:id" element={<JobDetail />} />
+        </Route>
+
+        {/* Rute lain bisa ditambahkan di sini */}
+      </Routes>
+    </Suspense>
   );
 }
 

@@ -8,11 +8,12 @@ const Hero = () => {
       className="relative bg-slate-700 text-white py-20 md:py-32"
       // Jika ingin menggunakan gambar latar belakang:
       style={{ backgroundImage: `url(${heroImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      
     >
       {/* Overlay jika menggunakan gambar latar belakang untuk kontras teks */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10" id='home'>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6">
           Temukan <span className="text-orange-400">Peluang Karir</span> & Talenta Terbaik
           <br className="hidden md:block" /> untuk <span className="text-orange-400">Perusahaan Anda</span>
