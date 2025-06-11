@@ -22,7 +22,7 @@ This is a **study project**, so if you see a bug, it's probably on purpose. Or n
 
 ```bash
 # Step 1: Clone it like you mean it
-git clone https://github.com/your-username/jobless-portal.git
+git clone https://github.com/chairunnasAriefM/jobless-portal.git
 
 # Step 2: Move into the project (you’re not a tourist)
 cd jobless-portal
@@ -45,6 +45,8 @@ That’s it. Now open your browser and be amazed. Or mildly impressed. Either wo
   /components  --> Your reusable job thingies
   /pages       --> Main pages like Home, Jobs, etc.
   /assets      --> Images, icons,
+  /services    --> Calling the API,
+  /layouts     --> layouts
   App.jsx      --> App starts here, duh
 ```
 
