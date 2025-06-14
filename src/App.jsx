@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 
 // Layouts
 import MainLayout from "./layouts/MainLayout";
+import EmployerDashboardLayout from "./layouts/EmployerDashboardLayout";
 
 // komponen Loading
 const PageLoader = () => (
@@ -27,14 +28,16 @@ const CompanyRegistrationPage = lazy(() =>
 );
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
+// perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
+import EmployerLoginPage from "./pages/Employer/EmployerLoginPage";
 
-// Contoh jika menggunakan React.lazy untuk halaman lain:
-// const AboutPage = React.lazy(() => import("./pages/AboutPage"));
-// const JobDetailsPage = React.lazy(() => import("./pages/JobDetailsPage"));
 
-// Jika Anda memiliki komponen Loading:
-// import Loading from './components/Loading';
+import NotFoundPage from './pages/NotFoundPage';
+
+// satpam
+import ProtectedRoute from './components/auth/ProtectedRoute';
+
 
 function App() {
   return (
@@ -66,6 +69,7 @@ function App() {
       <Routes>
         {/* Rute yang menggunakan MainLayout */}
         <Route element={<MainLayout />}>
+          {/* guess */}
           <Route path="/" element={<Index />} />
           <Route
             path="/daftar-perusahaan"
@@ -74,9 +78,22 @@ function App() {
           <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
           <Route path="/lowongan" element={<JobSearchResultsPage />} />
           <Route path="/lowongan/:id" element={<JobDetail />} />
-          {/* Employer */}
-          <Route path="/teshome" element={<EmployerHome />} />
+          <Route path="/EmployerHome" element={<EmployerHome />} />
         </Route>
+
+        <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
+
+
+        {/* Rute Dasbor Perusahaan */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard/perusahaan" element={<EmployerDashboardLayout />}>
+            <Route index element={<EmployerHome />} />
+          </Route>
+        </Route>
+
+
+
+        <Route path="*" element={<NotFoundPage />} />
 
         {/* Rute lain bisa ditambahkan di sini */}
       </Routes>

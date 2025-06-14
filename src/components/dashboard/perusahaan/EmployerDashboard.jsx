@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 // Menambahkan beberapa ikon baru untuk tampilan yang lebih modern
 import { Plus, Users, Eye, MoreVertical } from "lucide-react";
 
-// --- Data Struktural (Dummy Data) ---
-const dummyUser = {
-  nama_lengkap: "Chairunnas",
-};
+import useAuthStore from '../../../store/authStore';
+
+
 
 const dummyJobs = [
   {
@@ -70,11 +69,10 @@ const JobRowCard = ({ job }) => {
       {/* Kolom Status & Lowongan */}
       <div className="col-span-12 sm:col-span-5 flex items-center gap-4">
         <span
-          className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
-            isActive
-              ? "bg-green-100 text-green-800"
-              : "bg-yellow-100 text-yellow-800"
-          }`}
+          className={`px-2.5 py-1 text-xs font-semibold rounded-full ${isActive
+            ? "bg-green-100 text-green-800"
+            : "bg-yellow-100 text-yellow-800"
+            }`}
         >
           {isActive ? "Aktif" : "Draft"}
         </span>
@@ -151,9 +149,10 @@ const JobList = ({ jobs }) => {
 
 // --- Komponen Utama yang akan Anda Ekspor ---
 const ModernEmployerDashboard = () => {
+  const { user } = useAuthStore();
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-10 bg-gray-50/50">
-      <WelcomeBanner user={dummyUser} />
+      <WelcomeBanner user={user} />
 
       <div>
         <div className="flex justify-between items-center mb-5">
