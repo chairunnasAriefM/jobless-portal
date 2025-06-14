@@ -24,7 +24,7 @@ const Index = lazy(() => import("./pages/Index"));
 const JobSearchWizard = lazy(() => import("./pages/JobSearchWizard"));
 const JobSearchResultsPage = lazy(() => import("./pages/JobSearchResultsPage"));
 const CompanyRegistrationPage = lazy(() =>
-  import("./pages/CompanyRegistrationPage")
+  import("./pages/Employer/CompanyRegistrationPage")
 );
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
@@ -71,10 +71,6 @@ function App() {
         <Route element={<MainLayout />}>
           {/* guess */}
           <Route path="/" element={<Index />} />
-          <Route
-            path="/daftar-perusahaan"
-            element={<CompanyRegistrationPage />}
-          />
           <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
           <Route path="/lowongan" element={<JobSearchResultsPage />} />
           <Route path="/lowongan/:id" element={<JobDetail />} />
@@ -82,6 +78,7 @@ function App() {
         </Route>
 
         <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
+        <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
 
 
         {/* Rute Dasbor Perusahaan */}

@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 // import useAuthStore from '../../store/authStore';
 import { Loader2 } from 'lucide-react';
 
-import { manualAuthAPI } from '../../services/EmployerAuthAPI';
+import { EmployerAuthAPI } from '../../services/EmployerAuthAPI';
 
 import useAuthStore from '../../store/authStore';
 
@@ -27,7 +27,7 @@ const EmployerLoginPage = () => {
 
         try {
             // Panggil fungsi login manual yang baru
-            const userData = await manualAuthAPI.login(email, password);
+            const userData = await EmployerAuthAPI.loginManual(email, password);
 
             if (userData) {
                 // LOGIN BERHASIL

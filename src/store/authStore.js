@@ -9,6 +9,7 @@ const getInitialUser = () => {
             return JSON.parse(storedUserSession);
         } catch (e) {
             localStorage.removeItem('manual_user_session');
+            console.log(e);
             return null;
         }
     }
