@@ -70,14 +70,14 @@ const Navbar = () => {
             <Logo />
           </div>
 
-          <div className="hidden md:flex flex-grow max-w-xl mx-8">
+          {/* <div className="hidden md:flex flex-grow max-w-xl mx-8">
             <div className="relative w-full">
               <input type="text" placeholder="Ketik posisi, keahlian, atau perusahaan..." className="w-full py-2.5 pl-4 pr-12 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
               <button type="submit" className="absolute inset-y-0 right-0 flex items-center justify-center px-4 bg-orange-500 text-white rounded-r-lg hover:bg-orange-600">
                 <Search size={20} />
               </button>
             </div>
-          </div>
+          </div> */}
 
           <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
             {/* ====== PERUBAHAN DI SINI ====== */}
@@ -95,9 +95,27 @@ const Navbar = () => {
               </ConditionalNavLink>
             ))}
 
-            <HashLink to="/#signup" smooth className="bg-orange-500 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-orange-600">
-              Daftar
-            </HashLink>
+            {/* // Ganti dua <HashLink> Anda dengan div ini */}
+
+            <div className="hidden md:flex items-center space-x-3">
+
+              <HashLink
+                to="/EmployerSignIN"
+                smooth
+                className="text-gray-300 hover:bg-slate-700 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+              >
+                Pasang Lowongan
+              </HashLink>
+
+              <HashLink
+                to="/#signup"
+                smooth
+                className="bg-orange-500 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+              >
+                Sign In
+              </HashLink>
+
+            </div>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -125,11 +143,23 @@ const Navbar = () => {
               Cari Lowongan
             </RouterNavLink>
 
+
+
             {scrollLinks.map((link) => (
               <ConditionalNavLink key={link.text} to={link.href} isMobile={true}>
                 {link.text}
               </ConditionalNavLink>
             ))}
+
+            <RouterNavLink
+              to="/EmployerSignIN"
+              onClick={closeMobileMenu}
+              className={({ isActive }) =>
+                `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'text-white bg-slate-700' : 'text-gray-300 hover:bg-slate-700 hover:text-white'}`
+              }
+            >
+              Pasang Lowongan
+            </RouterNavLink>
 
             <HashLink to="/#signup" smooth onClick={closeMobileMenu} className="bg-orange-500 text-white block w-full text-center mt-2 px-4 py-2.5 rounded-lg text-base font-semibold hover:bg-orange-600">
               Daftar
