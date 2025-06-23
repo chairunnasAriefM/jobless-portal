@@ -100,7 +100,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-3">
 
               <HashLink
-                to="/EmployerSignIN"
+                to="/login-perusahaan"
                 smooth
                 className="text-gray-300 hover:bg-slate-700 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
               >

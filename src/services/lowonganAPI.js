@@ -107,22 +107,30 @@ export const lowonganAPI = {
      */
     async fetchLowonganById(id) {
         if (!id) return null;
-
         const { data, error } = await supabase
             .from('lowongan_kerja')
-            .select(`
-        *, 
-        perusahaan(*), 
-        tipe_pekerjaan(*)
-      `) // Ambil semua kolom dari lowongan dan semua kolom dari relasinya
+            .select('*, perusahaan(*), tipe_pekerjaan(*), keahlian(*)') // Ambil data keahlian terkait
             .eq('lowongan_id', id)
-            .single(); // .single() untuk mengambil satu baris data sebagai objek, bukan array
+            .single();
+        if (error) throw error;
+        return data;
+    },
 
-        if (error) {
-            console.error("Supabase fetch by ID error:", error);
-            throw new Error("Gagal mengambil detail lowongan.");
-        }
+    // BARU: Mengambil semua keahlian untuk dropdown
+    async getAllKeahlian() {
+        const { data, error } = await supabase.from('keahlian').select('keahlian_id, nama_keahlian');
+        if (error) throw error;
+        return data;
+    },
 
+    // BARU: Satu fungsi untuk Create & Update lowongan beserta keahliannya
+    async saveLowongan(jobData, skillIds) {
+        const { data, error } = await supabase.rpc('create_or_update_lowongan', {
+            job_payload: jobData,
+            skill_ids: skillIds
+        });
+
+        if (error) throw error;
         return data;
     },
 
@@ -161,5 +169,39 @@ export const lowonganAPI = {
         }
 
         return { message: "Lowongan berhasil dihapus" };
+    },
+
+    /**
+   * Mengambil semua lowongan milik satu perusahaan tertentu
+   * beserta jumlah pelamarnya. Ini untuk halaman dasbor.
+   * @param {number} perusahaanId - ID dari perusahaan yang sedang login.
+   * @returns {Promise<Array>} - Sebuah array berisi data lowongan.
+   */
+    async fetchLowonganByPerusahaan(perusahaanId) {
+        // Pastikan ada ID perusahaan sebelum menjalankan query
+        if (!perusahaanId) {
+            console.warn("fetchLowonganByPerusahaan dipanggil tanpa perusahaanId.");
+            return [];
+        }
+
+        // Query untuk mengambil data lowongan dan menghitung pelamar (kandidat)
+        const { data, error } = await supabase
+            .from('lowongan_kerja')
+            .select(`
+        lowongan_id,
+        judul,
+        lokasi,
+        status_aktif,
+        kandidat:lamaran(count) 
+      `)
+            .eq('perusahaan_id', perusahaanId)
+            .order('tanggal_diposting', { ascending: false });
+
+        if (error) {
+            console.error("Supabase error fetching jobs for company:", error);
+            throw new Error("Gagal mengambil data lowongan milik perusahaan.");
+        }
+
+        return data;
     },
 };

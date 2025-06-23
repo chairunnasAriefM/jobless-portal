@@ -31,12 +31,16 @@ const JobDetail = lazy(() => import("./pages/JobDetail"));
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
 import EmployerLoginPage from "./pages/Employer/EmployerLoginPage";
+import ProfilPerusahaanPage from "./pages/Employer/ProfilPerusahaanPage";
+import ManageJobsPage from "./pages/Employer/ManageJobsPage";
+import JobFormPage from './pages/Employer/JobFormPage';
 
 
 import NotFoundPage from './pages/NotFoundPage';
 
 // satpam
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import PublicOnlyRoute from './components/auth/PublicOnlyRoute';
 
 
 function App() {
@@ -77,14 +81,20 @@ function App() {
           <Route path="/EmployerHome" element={<EmployerHome />} />
         </Route>
 
-        <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
-        <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
+          <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+        </Route>
 
 
         {/* Rute Dasbor Perusahaan */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard/perusahaan" element={<EmployerDashboardLayout />}>
             <Route index element={<EmployerHome />} />
+            <Route path="profil" element={<ProfilPerusahaanPage />} />
+            <Route path="lowongan" element={<ManageJobsPage />} />
+            <Route path="lowongan/baru" element={<JobFormPage />} />
+            <Route path="lowongan/edit/:id" element={<JobFormPage />} />
           </Route>
         </Route>
 
