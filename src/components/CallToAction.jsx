@@ -19,7 +19,7 @@ const CallToAction = () => {
             Daftar Sebagai Perusahaan
           </a>
           <a
-            href="#jobseeker-signup" // Arahkan ke halaman registrasi pencari kerja
+            href="/daftar-pencariKerja" // Arahkan ke halaman registrasi pencari kerja
             className="bg-white hover:bg-gray-100 text-slate-700 font-bold py-4 px-10 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
           >
             Daftar Sebagai Pencari Kerja

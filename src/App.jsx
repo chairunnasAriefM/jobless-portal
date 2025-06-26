@@ -28,6 +28,9 @@ const CompanyRegistrationPage = lazy(() =>
 );
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
+// pencari kerja
+const JobSeekerRegister = lazy(() => import("./pages/jobseeker/Auth/JobSeekerRegister"));
+
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
 import EmployerLoginPage from "./pages/Employer/EmployerLoginPage";
@@ -37,6 +40,9 @@ import JobFormPage from './pages/Employer/JobFormPage';
 
 
 import NotFoundPage from './pages/NotFoundPage';
+
+// auth
+import UnifiedLoginPage from './pages/UnifiedLoginPage';
 
 // satpam
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -84,8 +90,10 @@ function App() {
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
           <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
+          <Route path="/daftar-pencariKerja" element={<JobSeekerRegister />} />
         </Route>
 
+        <Route path="/login" element={<UnifiedLoginPage />} />
 
         {/* Rute Dasbor Perusahaan */}
         <Route element={<ProtectedRoute />}>

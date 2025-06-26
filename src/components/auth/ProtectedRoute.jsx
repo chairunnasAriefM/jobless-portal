@@ -11,7 +11,7 @@ const ProtectedRoute = () => {
         // ..."lemparkan" pengguna ke halaman login.
         // 'replace' digunakan agar pengguna tidak bisa menekan tombol "back" di browser
         // untuk kembali ke halaman dasbor yang seharusnya terlindungi.
-        return <Navigate to="/login-perusahaan" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     // 3. Jika kunci ada (artinya sudah login), izinkan akses.

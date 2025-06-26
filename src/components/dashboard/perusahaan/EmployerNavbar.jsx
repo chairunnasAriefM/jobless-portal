@@ -13,11 +13,16 @@ import useAuthStore from '../../../store/authStore';
 // Komponen Logo untuk sisi employer
 const EmployerLogo = () => (
     <Link to="/dashboard/perusahaan" className="flex items-center space-x-3">
+        <img
+            src="/LogoJoblessPortal-01.png"
+            alt="Logo JoblessPortal"
+            className="h-8 w-auto"
+        />
         <span className="text-2xl font-bold text-white">
             Jobless<span className="text-orange-500">Portal</span>
         </span>
         <span className="text-xs font-semibold text-orange-400 border border-white/20 px-2 py-0.5 rounded-md">
-            Pemberi Kerja
+            Perusahaan
         </span>
     </Link>
 );
