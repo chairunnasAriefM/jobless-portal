@@ -1,4 +1,4 @@
-// src/pages/jobseeker/auth/JobSeekerRegistrationPage.jsx
+// src/pages/jobseeker/auth/JobSeekerRegister.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, FileText, Search, LogIn, Loader2 } from 'lucide-react';
@@ -8,7 +8,7 @@ import { JobSeekerAuthAPI } from '../../../services/JobSeekerAuthAPI';
 
 const MySwal = withReactContent(Swal);
 
-const JobSeekerRegistrationPage = () => {
+const JobSeekerRegister = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -46,17 +46,17 @@ const JobSeekerRegistrationPage = () => {
 
         try {
             const result = await JobSeekerAuthAPI.registerJobSeeker(formData);
-            
+
             await MySwal.fire({
                 title: 'Pendaftaran Berhasil!',
                 text: 'Akun Anda telah dibuat. Silakan login untuk memulai pencarian kerja.',
                 icon: 'success',
                 confirmButtonText: 'Lanjutkan ke Login',
-                confirmButtonColor: '#f97316', 
+                confirmButtonColor: '#f97316',
             });
 
             // Arahkan ke halaman login yang sesuai untuk job seeker
-            navigate('/login'); 
+            navigate('/login');
 
         } catch (error) {
             setApiError(error.message || 'Terjadi kesalahan. Email ini mungkin sudah terdaftar.');
@@ -69,7 +69,7 @@ const JobSeekerRegistrationPage = () => {
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 sm:p-6 lg:p-8 pt-24 pb-12">
             <div className="container mx-auto max-w-6xl bg-white shadow-xl rounded-2xl overflow-hidden md:flex">
-                
+
                 {/* Kolom Kiri - Informasi untuk Pencari Kerja */}
                 <div className="md:w-1/2 bg-gradient-to-br from-slate-700 to-slate-900 p-8 sm:p-12 text-white flex flex-col justify-center">
                     <div className="text-center md:text-left">
@@ -122,7 +122,7 @@ const JobSeekerRegistrationPage = () => {
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                         </div>
-                        
+
                         <div className="relative">
                             <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">Konfirmasi Kata Sandi</label>
                             <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" id="confirmPassword" required className="input-style focus:ring-orange-500 focus:border-orange-500" placeholder="Ulangi kata sandi" value={formData.confirmPassword} onChange={handleChange} />
@@ -145,7 +145,7 @@ const JobSeekerRegistrationPage = () => {
                     <p className="mt-8 text-center text-sm text-slate-600">
                         Sudah punya akun?{' '}
                         <Link to="/login" className="font-medium text-orange-600 hover:text-orange-500 inline-flex items-center">
-                            Masuk Sekarang <LogIn size={14} className="ml-1"/>
+                            Masuk Sekarang <LogIn size={14} className="ml-1" />
                         </Link>
                     </p>
                 </div>
@@ -154,4 +154,4 @@ const JobSeekerRegistrationPage = () => {
     );
 };
 
-export default JobSeekerRegistrationPage;
+export default JobSeekerRegister;

@@ -29,7 +29,7 @@ const CompanyRegistrationPage = lazy(() =>
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
 // pencari kerja
-const JobSeekerRegistrationPage = lazy(() => import("./pages/Jobseeker/Auth/JobSeekerRegistrationPage"));
+const JobSeekerRegistrationPage = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
