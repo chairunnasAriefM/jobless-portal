@@ -42,7 +42,7 @@ import JobFormPage from './pages/Employer/JobFormPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // auth
-import UnifiedLoginPage from './pages/UnifiedLoginPage';
+const UnifiedLoginPage = lazy(() => import("./pages/UnifiedLoginPage"));
 
 // satpam
 import ProtectedRoute from './components/auth/ProtectedRoute';

@@ -50,6 +50,8 @@ const LoginForm = ({ title, subtitle, onSubmit, isLoading, apiError }) => {
         onSubmit(email, password);
     };
 
+    
+
     return (
         <div className="w-full h-full p-8 md:p-12 flex flex-col justify-center">
             <div className="mb-8">
@@ -75,7 +77,7 @@ const LoginForm = ({ title, subtitle, onSubmit, isLoading, apiError }) => {
                     </button>
                 </div>
                 <p className="text-sm text-center text-slate-500">
-                    Lupa password? <Link to="/lupa-password" className="font-medium text-orange-600 hover:underline">Reset di sini</Link>
+                    Belum punya akun? <Link to="/daftar-perusahaan" className="font-medium text-orange-600 hover:underline">Daftar di sini</Link>
                 </p>
             </form>
         </div>
@@ -133,12 +135,14 @@ const UnifiedLoginPage = () => {
 
     const isEmployerActive = activeForm === 'employer';
 
+   
+
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-            <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl flex relative" style={{ height: '650px' }}>
+            <div className="w-full max-w-sm md:max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row relative overflow-hidden md:h-[650px]">
 
                 {/* Panel Kiri (Form Pencari Kerja) */}
-                <div className="w-1/2 h-full">
+                <div className={`w-full md:w-1/2 flex-shrink-0 transition-all duration-300 ease-in-out ${isEmployerActive ? 'hidden md:flex' : 'flex'}`}>
                     <LoginForm
                         title="Login Pencari Kerja"
                         subtitle="Temukan ribuan peluang karir."
@@ -149,7 +153,7 @@ const UnifiedLoginPage = () => {
                 </div>
 
                 {/* Panel Kanan (Form Pemberi Kerja)*/}
-                <div className="w-1/2 h-full">
+                <div className={`w-full md:w-1/2 flex-shrink-0 transition-all duration-300 ease-in-out ${isEmployerActive ? 'flex' : 'hidden md:flex'}`}>
                     <LoginForm
                         title="Login Pemberi Kerja"
                         subtitle="Akses dasbor & kelola lowongan."
@@ -159,9 +163,17 @@ const UnifiedLoginPage = () => {
                     />
                 </div>
 
-                <div
-                    className={`absolute top-0 w-1/2 h-full transition-transform duration-700 ease-in-out
+                {/* <div
+                    className={`absolute top-0 w-1/2 h-full transition-transform duration-700 ease-in-out 
                         ${isEmployerActive ? 'translate-x-0' : 'translate-x-full'}`}
+                > */}
+
+                <div
+                    className={`
+                        w-full md:w-1/2 md:h-full md:absolute md:top-0
+                        transition-transform duration-700 ease-in-out
+                         ${isEmployerActive ? 'md:translate-x-0' : 'md:translate-x-full'}`
+                    }
                 >
                     <IllustrationPanel onSwitch={handleSwitchForm} isEmployerActive={isEmployerActive} />
                 </div>

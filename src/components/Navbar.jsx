@@ -1,13 +1,12 @@
 // src/components/Navbar.jsx
 import React, { useState, Fragment } from 'react';
-// PERBAIKAN 1: Impor 'Link' dari react-router-dom
 import { useLocation, NavLink as RouterNavLink, Link } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { HashLink } from 'react-router-hash-link';
-// PERBAIKAN 2: Impor ikon yang dibutuhkan untuk UserMenu
 import { Search, Menu, X, LayoutDashboard, User, LogOut } from 'lucide-react';
 import { Transition, Menu as HeadlessMenu } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import useAuthStore from '../store/authStore';
 
@@ -36,8 +35,33 @@ const UserMenu = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    logout();
-    navigate('/'); // Arahkan ke homepage setelah logout
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Anda akan keluar dari sesi ini.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, logout!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Proses logout
+        logout();
+
+        // Tampilkan notifikasi sukses
+        Swal.fire({
+          title: 'Berhasil!',
+          text: 'Anda telah berhasil logout.',
+          icon: 'success',
+          timer: 1500, // Notifikasi hilang setelah 1.5 detik
+          showConfirmButton: false
+        });
+
+        // Arahkan ke homepage
+        navigate('/');
+      }
+    });
   };
 
   // Tentukan path dasbor berdasarkan tipe user
@@ -85,7 +109,6 @@ const UserMenu = () => {
             <HeadlessMenu.Item>
               {({ active }) => (
                 <button onClick={handleSignOut} className={`${active ? 'bg-red-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}>
-                  {/* PERBAIKAN 3: Nama komponen ikon harus PascalCase (LogOut) */}
                   <LogOut className="mr-2 h-5 w-5" /> Logout
                 </button>
               )}
@@ -163,7 +186,7 @@ const Navbar = () => {
                 {link.text}
               </ConditionalNavLink>
             ))}
-            
+
             <HashLink
               to="/dashboard/perusahaan/lowongan/baru"
               smooth
@@ -230,19 +253,49 @@ const Navbar = () => {
             </RouterNavLink>
 
             {user ? (
-               <div className="border-t border-slate-700 mt-3 pt-3">
-                 <div className="flex items-center px-3 mb-2">
-                   <div className="ml-3">
-                     <p className="text-base font-medium text-white">{user.nama_lengkap || 'Pengguna'}</p>
-                     <p className="text-sm font-medium text-gray-400">{user.email}</p>
-                   </div>
-                 </div>
-                 <div className="mt-3 space-y-1">
-                    <Link to={user?.tipe_user_id === 2 ? '/dashboard/perusahaan' : '/dashboard/pencari-kerja'} onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white">Dasbor Saya</Link>
-                    <Link to={user?.tipe_user_id === 2 ? '/dashboard/perusahaan/profil' : '/dashboard/pencari-kerja/profil'} onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white">Profil</Link>
-                    <button onClick={() => { logout(); closeMobileMenu(); navigate('/'); }} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white">Logout</button>
-                 </div>
-               </div>
+              <div className="border-t border-slate-700 mt-3 pt-3">
+                <div className="flex items-center px-3 mb-2">
+                  <div className="ml-3">
+                    <p className="text-base font-medium text-white">{user.nama_lengkap || 'Pengguna'}</p>
+                    <p className="text-sm font-medium text-gray-400">{user.email}</p>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-1">
+                  <Link to={user?.tipe_user_id === 2 ? '/dashboard/perusahaan' : '/dashboard/pencari-kerja'} onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white">Dasbor Saya</Link>
+                  <Link to={user?.tipe_user_id === 2 ? '/dashboard/perusahaan/profil' : '/dashboard/pencari-kerja/profil'} onClick={closeMobileMenu} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white">Profil</Link>
+                  {/* PENAMBAHAN: Logika Swal untuk logout di menu mobile */}
+                  <button
+                    onClick={() => {
+                      closeMobileMenu(); // Tutup menu dulu
+                      Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        text: "Anda akan keluar dari sesi ini.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, logout!',
+                        cancelButtonText: 'Batal'
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          LogOut();
+                          Swal.fire({
+                            title: 'Berhasil!',
+                            text: 'Anda telah berhasil logout.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                          });
+                          navigate('/');
+                        }
+                      });
+                    }}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 hover:text-white"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="border-t border-slate-700 mt-3 pt-3 space-y-2">
                 <RouterNavLink

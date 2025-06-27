@@ -1,13 +1,13 @@
-// src/layouts/EmployerDashboardLayout.jsx
+// src/layouts/JobSeekerDashboardLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import EmployerNavbar from '../components/dashboard/perusahaan/EmployerNavbar';
+import JobSeekerNavbar from '../components/dashboard/pencari_kerja/JobSeekerNavbar';
 import Footer from '../components/Footer';
 
-const EmployerDashboardLayout = () => {
+const JobSeekerDashboardLayout = () => {
     return (
         <div className="bg-slate-100 min-h-screen">
-            <EmployerNavbar />
+            <JobSeekerNavbar />
             <main className="pt-20">
                 {/* Konten halaman  */}
                 <Outlet />
@@ -18,4 +18,4 @@ const EmployerDashboardLayout = () => {
     );
 };
 
-export default EmployerDashboardLayout;
+export default JobSeekerDashboardLayout;
