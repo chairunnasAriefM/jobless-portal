@@ -1,4 +1,4 @@
-// src/pages/jobseeker/auth/JobSeekerRegistrationPage.jsx
+// src/pages/jobseeker/auth/JobSeekerRegister.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, FileText, Search, LogIn, Loader2 } from 'lucide-react';
