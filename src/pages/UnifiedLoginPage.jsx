@@ -110,7 +110,7 @@ const UnifiedLoginPage = () => {
                 userData = await JobSeekerAuthAPI.loginManual(email, password);
                 if (userData) {
                     login(userData); // Simpan sesi ke state global (dan localStorage)
-                    navigate('/'); // Arahkan ke homepage setelah login
+                    navigate('/dashboard/pencari-kerja'); // Arahkan ke homepage setelah login
                 } else {
                     // Jika API mengembalikan null, berarti login gagal
                     throw new Error("Email atau password pencari kerja salah.");

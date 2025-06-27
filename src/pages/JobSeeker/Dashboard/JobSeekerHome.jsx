@@ -1,11 +1,11 @@
-// src/pages/Dashboard/JobSeekerHome.jsx
+// src/pages/JobSeeker/JobSeekerHome.jsx
 import { Loader2, AlertTriangle, ChevronDown } from "lucide-react";
-import EmployerDashboard from "../../../components/dashboard/pencari_kerja/JobSeekerNavbar";
+import JobSeekerDashboard from "../../../components/dashboard/pencari_kerja/JobSeekerDashboard";
 
 const JobSeekerHome = () => {
   return (
     <div className="bg-slate-50 ">
-      <EmployerDashboard />
+      <JobSeekerDashboard />
     </div>
   );
 };
