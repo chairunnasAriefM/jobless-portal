@@ -11,8 +11,8 @@ import withReactContent from 'sweetalert2-react-content';
 import useAuthStore from '../../../store/authStore';
 
 // Komponen Logo untuk sisi employer
-const EmployerLogo = () => (
-    <Link to="/dashboard/perusahaan" className="flex items-center space-x-3">
+const Logo = () => (
+    <Link to="/dashboard/pencari-kerja" className="flex items-center space-x-3">
         <img
             src="/LogoJoblessPortal-01.png"
             alt="Logo JoblessPortal"
@@ -49,16 +49,13 @@ const UserMenu = () => {
             if (result.isConfirmed) {
                 // logout sekarang membersihkan localStorage
                 logout();
-                navigate('/'); // Arahkan ke homepage
+                navigate('/');
             }
         });
     };
 
-    // 4. Ambil nama langsung dari objek user (bukan app_metadata)
     const userName = user?.nama_lengkap || user?.email;
-    // const userEmail = user?.email;
 
-    // 5. Tampilkan tombol Login/Daftar jika tidak ada user yang login
     if (!user) {
         return (
             <div className="flex items-center space-x-3">
@@ -100,13 +97,6 @@ const UserMenu = () => {
                                 </Link>
                             )}
                         </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <Link to="/dashboard/perusahaan/pengaturan" className={`${active ? 'bg-orange-500 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}>
-                                    <Settings className="mr-2 h-5 w-5" /> Pengaturan
-                                </Link>
-                            )}
-                        </Menu.Item>
                     </div>
                     <div className="py-1">
                         <Menu.Item>
@@ -141,37 +131,25 @@ const EmployerNavbar = () => {
                     {/* Sisi Kiri: Logo dan Navigasi Utama */}
                     <div className="flex items-center space-x-8">
                         <div className="flex-shrink-0">
-                            <EmployerLogo />
+                            <Logo />
                         </div>
                         <div className="hidden md:flex items-center space-x-8">
                             <NavLink
-                                to="/dashboard/perusahaan"
+                                to="/dashboard/pencari-kerja"
                                 end
                                 className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}
                             >
                                 Home
                             </NavLink>
                             <NavLink
-                                to="/dashboard/perusahaan/lowongan"
+                                to="/dashboard/pencari-kerja/lowongan"
                                 className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}
                             >
-                                Jobs
+                                Lowongan
                             </NavLink>
                         </div>
                     </div>
 
-                    {/* Sisi Kanan: User dan Tombol Aksi */}
-                    <div className="hidden md:flex items-center space-x-4">
-                        <UserMenu />
-                        <div className="h-8 border-l border-slate-600"></div>
-                        <Link
-                            to="/dashboard/perusahaan/lowongan/baru"
-                            className="inline-flex items-center bg-orange-500 text-white font-bold py-2.5 px-5 rounded-full hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm"
-                        >
-                            <PlusCircle size={18} className="mr-2" />
-                            Buat Lowongan
-                        </Link>
-                    </div>
 
                     <div className="md:hidden">
                         {/* Anda bisa menambahkan tombol menu hamburger di sini jika perlu */}

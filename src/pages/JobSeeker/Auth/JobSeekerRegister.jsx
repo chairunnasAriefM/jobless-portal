@@ -150,7 +150,7 @@ const JobSeekerRegister = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </div> 
     );
 };
 

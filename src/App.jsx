@@ -11,6 +11,7 @@ import ScrollToTop from "./components/ScrollToTop";
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 import EmployerDashboardLayout from "./layouts/EmployerDashboardLayout";
+import JobSeekerDashboardLayout from "./layouts/JobSeekerDashboardLayout";
 
 // komponen Loading
 const PageLoader = () => (
@@ -30,6 +31,8 @@ const JobDetail = lazy(() => import("./pages/JobDetail"));
 
 // pencari kerja
 const JobSeekerRegister = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
+const JobSeekerHome = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerHome"));
+const JobSeekerProfilePage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerProfilePage"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
@@ -51,35 +54,10 @@ import PublicOnlyRoute from './components/auth/PublicOnlyRoute';
 
 function App() {
   return (
-    // <Suspense fallback={<Loading />}> {/* Aktifkan Suspense jika ada React.lazy */}
-    // <Routes>
-    //   {/* Rute yang menggunakan MainLayout */}
-    //   <Route element={<MainLayout />}>
-    //     <Route path="/" element={<Index />} />
-    //     <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
-    //     <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
-    //     <Route path="/lowongan" element={<JobSearchResultsPage />} />
-    //     <Route path="/lowongan/:id" element={<JobDetail />} />
-    //     {/* <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} /> */}
-    //     {/* Tambahkan rute lain yang menggunakan MainLayout di sini */}
-    //     {/*
-    //     <Route path="/tentang-kami" element={<AboutPage />} />
-    //     <Route path="/lowongan/:jobId" element={<JobDetailsPage />} />
-    //     */}
-    //   </Route>
-
-    //   {/* Rute lain yang mungkin tidak menggunakan MainLayout (misalnya halaman login khusus) */}
-    //   {/* <Route path="/login" element={<LoginPage />} />
-    //   */}
-    // </Routes>
-    // </Suspense>
-
     <Suspense fallback={<PageLoader />}>
       <ScrollToTop />
       <Routes>
-        {/* Rute yang menggunakan MainLayout */}
         <Route element={<MainLayout />}>
-          {/* guess */}
           <Route path="/" element={<Index />} />
           <Route path="/cari-lowongan-wizard" element={<JobSearchWizard />} />
           <Route path="/lowongan" element={<JobSearchResultsPage />} />
@@ -103,6 +81,17 @@ function App() {
             <Route path="lowongan" element={<ManageJobsPage />} />
             <Route path="lowongan/baru" element={<JobFormPage />} />
             <Route path="lowongan/edit/:id" element={<JobFormPage />} />
+          </Route>
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard/pencari-kerja" element={<JobSeekerDashboardLayout />}>
+            <Route index element={<JobSeekerHome />} />
+            <Route path="edit-profil" element={<JobSeekerProfilePage />} />
+            <Route path="profil" element={<JobSeekerProfilePage />} />
+            {/* <Route path="lowongan" element={<ManageJobsPage />} /> */}
+            {/* <Route path="lowongan/baru" element={<JobFormPage />} />
+            <Route path="lowongan/edit/:id" element={<JobFormPage />} /> */}
           </Route>
         </Route>
 
