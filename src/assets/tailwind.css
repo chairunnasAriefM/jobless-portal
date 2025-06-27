@@ -108,3 +108,24 @@ body {
 #nprogress .peg {
   box-shadow: 0 0 10px #f97316, 0 0 5px #f97316 !important;
 }
+
+/* Style umum untuk input agar konsisten */
+.input-style {
+  @apply w-full px-3 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 sm:text-sm;
+}
+
+/* Kustomisasi Tiptap agar sesuai dengan Tailwind */
+.prose :where(p):not(:where([class~="not-prose"] *)) {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose :where(ul):not(:where([class~="not-prose"] *)) {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose :where(ol):not(:where([class~="not-prose"] *)) {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}

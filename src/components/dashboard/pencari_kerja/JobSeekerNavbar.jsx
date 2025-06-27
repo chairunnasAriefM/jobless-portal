@@ -22,7 +22,7 @@ const EmployerLogo = () => (
             Jobless<span className="text-orange-500">Portal</span>
         </span>
         <span className="text-xs font-semibold text-orange-400 border border-white/20 px-2 py-0.5 rounded-md">
-            Perusahaan
+            Pencari Kerja
         </span>
     </Link>
 );

@@ -44,9 +44,10 @@ const JobCard = ({ job }) => {
                 )}
             </div>
             {/* Deskripsi diambil dari API dan dipotong jika terlalu panjang */}
-            <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">
-                {job.deskripsi}
-            </p>
+            <div
+                className="text-sm text-slate-500 leading-relaxed line-clamp-2"
+                dangerouslySetInnerHTML={{ __html: job.deskripsi }}
+            />
         </div>
     );
 };
