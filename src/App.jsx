@@ -29,8 +29,7 @@ const CompanyRegistrationPage = lazy(() =>
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
 // pencari kerja
-// const JobSeekerRegister = lazy(() => import("./pages/jobseeker/Auth/JobSeekerRegister"));
-import JobSeekerRegister from "./pages/jobseeker/Auth/JobSeekerRegister";
+const JobSeekerRegister = lazy(() => import("./pages/Jobseeker/Auth/JobSeekerRegister"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
