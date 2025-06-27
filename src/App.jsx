@@ -29,7 +29,7 @@ const CompanyRegistrationPage = lazy(() =>
 const JobDetail = lazy(() => import("./pages/JobDetail"));
 
 // pencari kerja
-const JobSeekerRegistrationPage = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
+const JobSeekerRegister = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
@@ -90,7 +90,7 @@ function App() {
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
           <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
-          <Route path="/daftar-pencariKerja" element={<JobSeekerRegistrationPage />} />
+          <Route path="/daftar-pencariKerja" element={<JobSeekerRegister />} />
         </Route>
 
         <Route path="/login" element={<UnifiedLoginPage />} />
