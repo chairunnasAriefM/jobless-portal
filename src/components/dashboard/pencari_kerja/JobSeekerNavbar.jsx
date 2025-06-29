@@ -150,10 +150,15 @@ const EmployerNavbar = () => {
                         </div>
                     </div>
 
+                    {/* Sisi Kanan: User dan Tombol Aksi */}
+                    <div className="hidden md:flex items-center space-x-4">
+                        <UserMenu />
+                    </div>
 
                     <div className="md:hidden">
                         {/* Anda bisa menambahkan tombol menu hamburger di sini jika perlu */}
                     </div>
+
 
                 </div>
             </div>

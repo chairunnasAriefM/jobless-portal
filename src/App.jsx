@@ -3,7 +3,7 @@
 import "./api/axiosConfig";
 import "./assets/tailwind.css";
 import { Routes, Route } from "react-router-dom";
-import React, { Suspense, lazy } from "react"; // Impor Suspense dan lazy
+import React, { Suspense, lazy } from "react";
 import { Loader2 } from "lucide-react";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -33,6 +33,7 @@ const JobDetail = lazy(() => import("./pages/JobDetail"));
 const JobSeekerRegister = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
 const JobSeekerHome = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerHome"));
 const JobSeekerProfilePage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerProfilePage"));
+const JobSeekerLowonganPage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerLowongan"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
@@ -50,6 +51,11 @@ const UnifiedLoginPage = lazy(() => import("./pages/UnifiedLoginPage"));
 // satpam
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import PublicOnlyRoute from './components/auth/PublicOnlyRoute';
+
+// Admin Dashboard
+import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
+import AdminHome from "./pages/Admin/AdminHome"
+const Pengguna = lazy(() => import("./pages/Admin/Pengguna"));
 
 
 function App() {
@@ -89,7 +95,7 @@ function App() {
             <Route index element={<JobSeekerHome />} />
             <Route path="edit-profil" element={<JobSeekerProfilePage />} />
             <Route path="profil" element={<JobSeekerProfilePage />} />
-            {/* <Route path="lowongan" element={<ManageJobsPage />} /> */}
+            <Route path="lowongan" element={<JobSearchResultsPage />} />
             {/* <Route path="lowongan/baru" element={<JobFormPage />} />
             <Route path="lowongan/edit/:id" element={<JobFormPage />} /> */}
           </Route>
@@ -99,7 +105,12 @@ function App() {
 
         <Route path="*" element={<NotFoundPage />} />
 
-        {/* Rute lain bisa ditambahkan di sini */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminDashboardLayout />}>
+            <Route path="dashboard" element={<AdminHome />} />
+            <Route path="users" element={<Pengguna />} />
+          </Route>
+        </Route>
       </Routes>
     </Suspense>
   );

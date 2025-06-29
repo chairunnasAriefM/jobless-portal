@@ -17,14 +17,14 @@ const WelcomeHeader = ({ user }) => (
             <h1 className="text-3xl font-bold text-slate-800">Selamat Datang, {user?.nama_lengkap || 'Pencari Kerja'}!</h1>
             <p className="mt-1 text-slate-500">Mari temukan peluang karir terbaik untukmu hari ini.</p>
         </div>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
             <button className="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors">
                 <MessageSquare size={22} />
             </button>
             <button className="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors">
                 <Bell size={22} />
             </button>
-        </div>
+        </div> */}
     </div>
 );
 
