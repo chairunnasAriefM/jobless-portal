@@ -1,24 +1,55 @@
-// src/components/admin/Sidebar.jsx
-
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut } from 'lucide-react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Users, Briefcase, FileText, Settings, LogOut, Sparkles } from 'lucide-react';
+import useAuthStore from '../../../store/authStore';
+import Swal from 'sweetalert2'; 
+import withReactContent from 'sweetalert2-react-content'; 
+
 import logo from '../../../assets/images/LogoJoblessPortal-01.png'; 
 
+const MySwal = withReactContent(Swal); 
+
 const Sidebar = () => {
+    const { user, logout } = useAuthStore();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        MySwal.fire({
+            title: 'Anda yakin ingin logout?',
+            text: "Anda akan keluar dari sesi admin dan dikembalikan ke halaman utama.",
+            icon: 'warning',
+            iconColor: '#f97316',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Logout!',
+            cancelButtonText: 'Batal',
+            customClass: {
+                popup: 'rounded-xl',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+                navigate('/');
+            }
+        });
+    };
+
     const navItems = [
         { path: "/admin/dashboard", label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
         { path: "/admin/users", label: 'Pengguna', icon: <Users size={20} /> },
-        { path: "/admin/companies", label: 'Perusahaan', icon: <Briefcase size={20} /> },
-        { path: "/admin/jobs", label: 'Lowongan', icon: <FileText size={20} /> },
+        { path: "/admin/keahlian", label: 'Keahlian', icon: <Sparkles size={20} /> },
+        { path: "/admin/lowongan", label: 'Lowongan', icon: <FileText size={20} /> },
     ];
 
     const linkBaseStyle = "group flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200";
     const linkInactiveStyle = "text-slate-400 hover:bg-slate-700/50 hover:text-white";
-    const linkActiveStyle = "bg-slate-700 text-orange-400 font-semibold shadow-inner";
+    const linkActiveStyle = "bg-slate-900 text-orange-400 font-semibold shadow-inner";
+
+    const userName = user?.nama_lengkap || 'Admin';
 
     return (
-        <aside className="w-72 bg-slate-800 text-white flex flex-col border-r border-slate-700">
+        <aside className="w-72 bg-slate-800 text-white flex-shrink-0 flex flex-col border-r border-slate-700">
             {/* Logo Section */}
             <div className="h-20 flex items-center px-6 border-b border-slate-700">
                 <Link to="/admin/dashboard" className="flex items-center gap-3">
@@ -48,14 +79,7 @@ const Sidebar = () => {
             {/* Settings and Profile */}
             <div className="mt-auto">
                 <div className="px-2 py-3 space-y-1 border-t border-slate-700">
-                    <NavLink to="/admin/settings" className={({ isActive }) =>
-                        `${linkBaseStyle} ${isActive ? linkActiveStyle : linkInactiveStyle}`
-                    }>
-                        <Settings size={20} />
-                        <span className="text-sm">Pengaturan</span>
-                    </NavLink>
-
-                    <button className={`${linkBaseStyle} text-red-400 hover:bg-red-500/10 hover:text-red-400`}>
+                    <button onClick={handleLogout} className={`${linkBaseStyle} text-red-400 hover:bg-red-500/10 hover:text-red-400`}>
                         <LogOut size={20} />
                         <span className="text-sm">Logout</span>
                     </button>
@@ -64,13 +88,13 @@ const Sidebar = () => {
                 {/* Admin Info */}
                 <div className="flex items-center gap-3 p-4 border-t border-slate-700">
                     <img
-                        src="https://ui-avatars.com/api/?name=Admin&background=f97316&color=fff"
+                        src={`https://cdn-icons-png.flaticon.com/512/1253/1253756.png`}
                         alt="Admin"
-                        className="w-10 h-10 rounded-full border border-orange-400"
+                        className="w-10 h-10 rounded-full border-2 border-slate-600"
                     />
                     <div>
-                        <p className="font-medium">Admin</p>
-                        <p className="text-xs text-slate-400">administrator</p>
+                        <p className="font-medium">{userName}</p>
+                        <p className="text-xs text-slate-400">Administrator</p>
                     </div>
                 </div>
             </div>

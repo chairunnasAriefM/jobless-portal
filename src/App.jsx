@@ -50,12 +50,22 @@ const UnifiedLoginPage = lazy(() => import("./pages/UnifiedLoginPage"));
 
 // satpam
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminRoute from './components/auth/AdminRoute';
+import EmployerRoute from './components/auth/EmployerRoute';
+import JobSeekerRoute from './components/auth/JobSeekerRoute';
 import PublicOnlyRoute from './components/auth/PublicOnlyRoute';
 
 // Admin Dashboard
 import AdminDashboardLayout from "./layouts/AdminDashboardLayout";
 import AdminHome from "./pages/Admin/AdminHome"
-const Pengguna = lazy(() => import("./pages/Admin/Pengguna"));
+import AdminLoginPage from "./pages/Admin/AdminLoginPage";
+const Pengguna = lazy(() => import("./pages/Admin/Pengguna/Pengguna"));
+const CreatePengguna = lazy(() => import("./pages/Admin/Pengguna/CreatePengguna"));
+const EditPengguna = lazy(() => import("./pages/Admin/Pengguna/EditPengguna"));
+const ManageLowonganPage = lazy(() => import("./pages/Admin/Lowongan/LowonganPage"));
+const EditLowongan = lazy(() => import("./pages/Admin/Lowongan/EditLowongan"));
+const ShowLowonganPage = lazy(() => import("./pages/Admin/Lowongan/ShowLowonganPage"));
+const ManageKeahlianPage = lazy(() => import("./pages/Admin/Keahlian/KeahlianPage"));
 
 
 function App() {
@@ -75,12 +85,13 @@ function App() {
           <Route path="/login-perusahaan" element={<EmployerLoginPage />} />
           <Route path="/daftar-perusahaan" element={<CompanyRegistrationPage />} />
           <Route path="/daftar-pencariKerja" element={<JobSeekerRegister />} />
+          <Route path="/login-admin" element={<AdminLoginPage />} />
         </Route>
 
         <Route path="/login" element={<UnifiedLoginPage />} />
 
         {/* Rute Dasbor Perusahaan */}
-        <Route element={<ProtectedRoute />}>
+        <Route element={<EmployerRoute />}>
           <Route path="/dashboard/perusahaan" element={<EmployerDashboardLayout />}>
             <Route index element={<EmployerHome />} />
             <Route path="profil" element={<ProfilPerusahaanPage />} />
@@ -90,7 +101,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<JobSeekerRoute />}>
           <Route path="/dashboard/pencari-kerja" element={<JobSeekerDashboardLayout />}>
             <Route index element={<JobSeekerHome />} />
             <Route path="edit-profil" element={<JobSeekerProfilePage />} />
@@ -105,10 +116,16 @@ function App() {
 
         <Route path="*" element={<NotFoundPage />} />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<AdminRoute />}>
           <Route path="/admin" element={<AdminDashboardLayout />}>
             <Route path="dashboard" element={<AdminHome />} />
             <Route path="users" element={<Pengguna />} />
+            <Route path="users/new" element={<CreatePengguna />} />
+            <Route path="users/edit/:id" element={<EditPengguna />} />
+            <Route path="lowongan" element={<ManageLowonganPage />} />
+            <Route path="lowongan/edit/:id" element={<EditLowongan />} />
+            <Route path="lowongan/show/:id" element={<ShowLowonganPage />} />
+            <Route path="keahlian" element={<ManageKeahlianPage />} />
           </Route>
         </Route>
       </Routes>

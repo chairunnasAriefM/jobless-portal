@@ -1,12 +1,14 @@
 import React from 'react';
 import { Search, Bell } from 'lucide-react';
+import useAuthStore from '../../../store/authStore';
 
 const Header = () => {
-    // Ganti dengan data user yang login
-    const userName = "Chairunnas";
+    const { user } = useAuthStore();
+
+    const userName = user?.nama_lengkap || user?.email || "Admin";
 
     return (
-        <header className="flex justify-between items-center mb-8">
+        <header className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
             {/* Search Bar */}
             <div className="relative w-full max-w-md">
                 <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -28,7 +30,7 @@ const Header = () => {
                 </button>
                 <div className="flex items-center space-x-3">
                     <img
-                        src={`https://ui-avatars.com/api/?name=${userName}&background=fb923c&color=fff`}
+                        src={`https://cdn-icons-png.flaticon.com/512/1253/1253756.png`}
                         alt="Admin Avatar"
                         className="w-10 h-10 rounded-full"
                     />
