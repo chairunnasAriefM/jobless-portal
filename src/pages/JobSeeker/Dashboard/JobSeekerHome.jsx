@@ -4,7 +4,7 @@ import JobSeekerDashboard from "../../../components/dashboard/pencari_kerja/JobS
 
 const JobSeekerHome = () => {
   return (
-    <div className="bg-slate-50 ">
+    <div className="">
       <JobSeekerDashboard />
     </div>
   );

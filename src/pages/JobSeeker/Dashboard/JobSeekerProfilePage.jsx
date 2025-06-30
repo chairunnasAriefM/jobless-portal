@@ -3,17 +3,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { supabase } from '../../../lib/supabaseClient'; // Sesuaikan path jika perlu
-import useAuthStore from '../../../store/authStore'; // Sesuaikan path jika perlu
-import { jobSeekerAPI } from '../../../services/jobSeekerAPI'; // Pastikan service API ini ada
-import RichTextEditor from '../../../components/forms/RichTextEditor'; // Pastikan komponen ini ada
+import { supabase } from '../../../lib/supabaseClient'; 
+import useAuthStore from '../../../store/authStore';
+import { jobSeekerAPI } from '../../../services/jobSeekerAPI';
+import RichTextEditor from '../../../components/forms/RichTextEditor'; 
 import { User, Linkedin, Sparkles, Save, Loader2, AlertCircle, ArrowLeft, UploadCloud, FileText, ExternalLink } from 'lucide-react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
 
-// Komponen untuk setiap bagian form agar lebih rapi
 const FormSection = ({ title, icon, children }) => (
     <section className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
         <div className="flex items-center border-b border-slate-200 pb-3 mb-6">
@@ -26,7 +25,6 @@ const FormSection = ({ title, icon, children }) => (
     </section>
 );
 
-// Komponen untuk input field yang bisa digunakan kembali
 const InputField = ({ id, label, ...props }) => (
     <div>
         <label htmlFor={id} className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
@@ -46,6 +44,7 @@ const EditJobSeekerProfilePage = () => {
         nomor_telepon: '',
         ringkasan: '',
         linkedin_url: '',
+        portfolio_url: '',
         file_cv: ''
     });
 
@@ -142,7 +141,8 @@ const EditJobSeekerProfilePage = () => {
                 p_nomor_telepon: profileData.nomor_telepon || null,
                 p_headline: profileData.headline || null,
                 p_ringkasan: profileData.ringkasan || null,
-                p_linkedin_url: profileData.linkedin_url || null
+                p_linkedin_url: profileData.linkedin_url || null,
+                p_portfolio_url: profileData.portfolio_url || null
             });
 
             if (profileError) throw profileError;
@@ -179,10 +179,10 @@ const EditJobSeekerProfilePage = () => {
         <div className="bg-slate-50 p-4 sm:p-6 md:p-8">
             <div className="container mx-auto max-w-4xl space-y-8">
                 <div className="flex items-center">
-                    <Link to="/dashboard/pencari-kerja/profil" className="p-2 rounded-full hover:bg-slate-200 text-slate-600 transition-colors">
+                    <Link to="/dashboard/pencari-kerja/" className="p-2 rounded-full hover:bg-slate-200 text-slate-600 transition-colors">
                         <ArrowLeft size={24} />
                     </Link>
-                    <h1 className="text-3xl font-bold text-slate-800 ml-4">Edit Profil</h1>
+                    <h1 className="text-3xl font-bold text-slate-800 ml-4">Profil</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
@@ -230,6 +230,7 @@ const EditJobSeekerProfilePage = () => {
                     {/* tautan dan CV */}
                     <FormSection title="Tautan & Resume" icon={<Linkedin />}>
                         <InputField id="linkedin_url" label="URL Profil LinkedIn" type="url" value={profileData.linkedin_url || ''} onChange={handleChange} placeholder="https://www.linkedin.com/in/..." />
+                        <InputField id="portfolio_url" label="URL Portfolio" type="url" value={profileData.portfolio_url || ''} onChange={handleChange} placeholder="https://github.com/.." />
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">CV/Resume (PDF, maks. 2MB)</label>
                             <div className="mt-2 flex items-center flex-wrap gap-4">

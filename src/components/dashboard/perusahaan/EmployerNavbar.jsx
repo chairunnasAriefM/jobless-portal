@@ -162,7 +162,7 @@ const EmployerNavbar = () => {
 
                     {/* Sisi Kanan: User dan Tombol Aksi */}
                     <div className="hidden md:flex items-center space-x-4">
-                        <UserMenu />
+                    <UserMenu />
                         <div className="h-8 border-l border-slate-600"></div>
                         <Link
                             to="/dashboard/perusahaan/lowongan/baru"
