@@ -1,207 +1,262 @@
-// src/services/lowonganAPI.js
+import axios from 'axios';
 
-// Impor klien supabase yang sudah kita buat di src/lib/supabaseClient.js
-import { supabase } from '../lib/supabaseClient';
+const API_BASE_URL = "https://egnlohisxwbquhuuktri.supabase.co/rest/v1";
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnbmxvaGlzeHdicXVodXVrdHJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzNTg3NDUsImV4cCI6MjA2NDkzNDc0NX0.dcWlyT-ROw4AQfDp6-h7ZIsi4EIz5yyeKUr0x2Xxeis";
 
-// Tentukan jumlah data yang akan ditampilkan per halaman untuk paginasi
-const ITEMS_PER_PAGE = 5;
+const headers = {
+    apikey: API_KEY,
+    Authorization: `Bearer ${API_KEY}`,
+};
 
-/**
- * lowonganAPI adalah objek yang berisi semua fungsi untuk berinteraksi 
- * dengan data lowongan pekerjaan di Supabase.
- */
 export const lowonganAPI = {
-
     /**
-     * Mengambil daftar lowongan dengan filter, sorting, dan pagination yang dinamis.
-     * Fungsi ini adalah inti dari halaman pencarian dan homepage.
-     * @param {object} filters - Objek berisi filter seperti searchTerm, jobType, limit, dll.
-     * @param {number} page - Nomor halaman saat ini untuk pagination.
-     * @returns {Promise<{data: Array, count: number}>} - Sebuah objek berisi array data dan total data yang cocok.
+     * Mengambil semua lowongan kerja beserta nama perusahaan dari tabel relasi.
+     * @returns {Promise<Array>} Array berisi data lowongan kerja.
      */
-    async fetchLowongan(filters = {}, page = 1) {
-        const { searchTerm, searchLocation, jobType, sortBy, limit } = filters;
+    async fetchLowonganKerja() {
+        try {
+            const response = await axios.get(
+                // Query select untuk join dengan tabel 'perusahaan'
+                `${API_BASE_URL}/lowongan_kerja?select=*,perusahaan(nama_perusahaan)&order=tanggal_diposting.desc`,
+                { headers }
+            );
 
-        // ================== LOGIKA BARU DIMULAI DI SINI ==================
-
-        let companyIds = []; // Siapkan array untuk menampung ID perusahaan yang cocok
-
-        // LANGKAH A: Jika ada searchTerm, cari dulu ID perusahaan yang cocok
-        if (searchTerm) {
-            const { data: companies, error: companyError } = await supabase
-                .from('perusahaan')
-                .select('perusahaan_id')
-                .ilike('nama_perusahaan', `%${searchTerm}%`);
-
-            if (companyError) {
-                console.error("Gagal mencari perusahaan:", companyError);
-            } else if (companies && companies.length > 0) {
-                companyIds = companies.map(c => c.perusahaan_id);
-            }
+            // Merapikan data agar mudah digunakan di frontend
+            return response.data.map(job => ({
+                ...job,
+                nama_perusahaan: job.perusahaan?.nama_perusahaan
+            }));
+        } catch (error) {
+            console.error("Error fetching job listings:", error.response?.data || error.message);
+            throw error.response?.data || error;
         }
+    },
 
-        // LANGKAH B: Bangun query utama ke tabel lowongan_kerja
-        let query = supabase
-            .from('lowongan_kerja')
-            .select(`
-        lowongan_id, judul, lokasi, deskripsi, tanggal_diposting,
-        gaji_min, gaji_max,
-        perusahaan (nama_perusahaan),
-        tipe_pekerjaan (nama_tipe),
-        tipe_pekerjaan_id
-      `, { count: 'exact' });
+    async fetchLowongan({ limit = 6 } = {}) {
+        try {
+            const response = await axios.get(
+                `${API_BASE_URL}/lowongan_kerja?select=*,perusahaan(nama_perusahaan,logo_perusahaan),tipe_pekerjaan(nama_tipe)&order=tanggal_diposting.desc&limit=${limit}`,
+                { headers }
+            );
 
-        // Terapkan filter searchTerm dengan logika OR yang sudah diperbaiki
-        if (searchTerm) {
-            const orConditions = [
-                `judul.ilike.%${searchTerm}%`, // Kondisi 1: judul cocok
-            ];
 
-            // Hanya tambahkan kondisi ID perusahaan jika ada ID yang ditemukan
-            if (companyIds.length > 0) {
-                orConditions.push(`perusahaan_id.in.(${companyIds.join(',')})`); // Kondisi 2: perusahaan_id cocok
-            }
-
-            query = query.or(orConditions.join(','));
+            return response.data.map(job => ({
+                ...job,
+                nama_perusahaan: job.perusahaan?.nama_perusahaan
+            }));
+        } catch (error) {
+            console.error("Error fetching latest job listings:", error.response?.data || error.message);
+            throw error.response?.data || error;
         }
+    },
 
-        // ================== LOGIKA BARU SELESAI ==================
 
 
-        // Filter
-        if (searchLocation) {
-            query = query.ilike('lokasi', `%${searchLocation}%`);
+    async fetchLowonganByPerusahaan(id) {
+        try {
+            const selectQuery = '*,perusahaan(nama_perusahaan),kandidat:lamaran(count)';
+
+            const response = await axios.get(
+                `${API_BASE_URL}/lowongan_kerja?perusahaan_id=eq.${id}&select=${selectQuery}&order=tanggal_diposting.desc`,
+                { headers }
+            );
+
+            // Merapikan data agar mudah digunakan di frontend
+            return response.data.map(job => ({
+                ...job,
+                nama_perusahaan: job.perusahaan?.nama_perusahaan
+            }));
+        } catch (error) {
+            console.error("Error fetching job listings:", error.response?.data || error.message);
+            throw error.response?.data || error;
         }
-        if (jobType && jobType !== '0') {
-            query = query.eq('tipe_pekerjaan_id', jobType);
-        }
-
-        // Sorting
-        if (sortBy === 'date_asc') {
-            query = query.order('tanggal_diposting', { ascending: true });
-        } else {
-            query = query.order('tanggal_diposting', { ascending: false });
-        }
-
-        // Pagination
-        if (limit) {
-            query = query.limit(limit);
-        } else {
-            const offset = (page - 1) * ITEMS_PER_PAGE;
-            query = query.range(offset, offset + ITEMS_PER_PAGE - 1);
-        }
-
-        // Eksekusi dan kembalikan hasil
-        const { data, error, count } = await query;
-        if (error) {
-            console.error("Supabase fetch error:", error);
-            throw new Error("Gagal mengambil data lowongan.");
-        }
-        return { data, count };
     },
 
     /**
-     * Mengambil detail satu lowongan pekerjaan berdasarkan ID-nya.
-     * @param {string|number} id - ID dari lowongan yang akan diambil.
-     * @returns {Promise<object|null>} - Sebuah objek lowongan atau null jika tidak ditemukan.
+     * Mengambil data satu lowongan kerja berdasarkan ID-nya.
+     * @param {number} id - ID lowongan kerja.
      */
-    async fetchLowonganById(id) {
-        if (!id) return null;
-        const { data, error } = await supabase
-            .from('lowongan_kerja')
-            .select('*, perusahaan(*), tipe_pekerjaan(*), keahlian(*)') // Ambil data keahlian terkait
-            .eq('lowongan_id', id)
-            .single();
-        if (error) throw error;
-        return data;
+    async getLowonganKerjaById(id) {
+        try {
+            const selectQuery = '*,perusahaan(*),tipe_pekerjaan(nama_tipe),keahlian(*)';
+
+            const response = await axios.get(
+                `${API_BASE_URL}/lowongan_kerja?lowongan_id=eq.${id}&select=${selectQuery}`,
+                // Meminta Supabase mengembalikan satu objek, bukan array
+                { headers: { ...headers, Accept: 'application/vnd.pgrst.object+json' } }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching job by ID:", error.response?.data || error.message);
+            throw error.response?.data || error;
+        }
     },
 
-    // BARU: Mengambil semua keahlian untuk dropdown
+    /**
+     * Mengubah data lowongan kerja yang ada.
+     * @param {number} id - ID lowongan kerja.
+     * @param {object} jobData - Data baru untuk lowongan.
+     */
+    async saveLowongan(jobData, skillIds = []) {
+        try {
+            const isEdit = !!jobData.lowongan_id;
+
+            const payload = {
+                judul: jobData.judul,
+                lokasi: jobData.lokasi,
+                status_aktif: jobData.status_aktif,
+                deskripsi: jobData.deskripsi,
+                kualifikasi: jobData.kualifikasi,
+                tipe_pekerjaan_id: jobData.tipe_pekerjaan_id,
+                gaji_min: jobData.gaji_min,
+                gaji_max: jobData.gaji_max,
+                perusahaan_id: jobData.perusahaan_id,
+            };
+
+            let lowonganId = jobData.lowongan_id;
+
+            if (isEdit) {
+                await axios.patch(
+                    `${API_BASE_URL}/lowongan_kerja?lowongan_id=eq.${lowonganId}`,
+                    payload,
+                    {
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json',
+                            Prefer: 'return=minimal',
+                        },
+                    }
+                );
+            } else {
+                const res = await axios.post(`${API_BASE_URL}/lowongan_kerja`, payload, {
+                    headers: {
+                        ...headers,
+                        'Content-Type': 'application/json',
+                        Prefer: 'return=representation',
+                    },
+                });
+                lowonganId = res.data[0].lowongan_id;
+            }
+
+            // Hapus keahlian lama (jika edit)
+            if (isEdit) {
+                await axios.delete(
+                    `${API_BASE_URL}/keahlian_lowongan?lowongan_id=eq.${lowonganId}`,
+                    { headers }
+                );
+            }
+
+            // Tambah keahlian baru
+            if (skillIds.length > 0) {
+                const insertPayload = skillIds.map(keahlian_id => ({
+                    lowongan_id: lowonganId,
+                    keahlian_id,
+                }));
+
+                await axios.post(`${API_BASE_URL}/keahlian_lowongan`, insertPayload, {
+                    headers: {
+                        ...headers,
+                        'Content-Type': 'application/json',
+                        Prefer: 'return=minimal',
+                    },
+                });
+            }
+
+            return { success: true };
+        } catch (error) {
+            console.error("Error saving job listing:", error.response?.data || error.message);
+            throw error.response?.data || error;
+        }
+    },
+
+
+    /**
+     * Menghapus sebuah lowongan kerja berdasarkan ID-nya.
+     * @param {number} id - ID lowongan kerja yang akan dihapus.
+     */
+    async deleteLowonganKerja(id) {
+        try {
+            await axios.delete(`${API_BASE_URL}/lowongan_kerja?lowongan_id=eq.${id}`, { headers });
+        } catch (error) {
+            console.error("Error deleting job listing:", error.response?.data || error.message);
+            throw error.response?.data || error;
+        }
+    },
+
+    // seperti namanya
     async getAllKeahlian() {
-        const { data, error } = await supabase.from('keahlian').select('keahlian_id, nama_keahlian');
-        if (error) throw error;
-        return data;
-    },
+        try {
+            const response = await axios.get(
+                `${API_BASE_URL}/keahlian?select=*`,
+                { headers }
+            );
 
-    // BARU: Satu fungsi untuk Create & Update lowongan beserta keahliannya
-    async saveLowongan(jobData, skillIds) {
-        const { data, error } = await supabase.rpc('create_or_update_lowongan', {
-            job_payload: jobData,
-            skill_ids: skillIds
-        });
-
-        if (error) throw error;
-        return data;
-    },
-
-    /**
-     * (Contoh) Fungsi untuk membuat lowongan baru.
-     * @param {object} jobData - Objek berisi data lowongan baru.
-     */
-    async createLowongan(jobData) {
-        const { data, error } = await supabase
-            .from('lowongan_kerja')
-            .insert([jobData]) // data harus dalam bentuk array
-            .select()
-            .single();
-
-        if (error) {
-            console.error("Supabase create error:", error);
-            throw new Error("Gagal membuat lowongan baru.");
+            // Merapikan data agar mudah digunakan di frontend
+            return response.data.map(job => ({
+                ...job,
+                nama_perusahaan: job.perusahaan?.nama_perusahaan
+            }));
+        } catch (error) {
+            console.error("Error fetching job listings:", error.response?.data || error.message);
+            throw error.response?.data || error;
         }
-
-        return data;
     },
 
-    /**
-     * (Contoh) Fungsi untuk menghapus lowongan.
-     * @param {string|number} id - ID lowongan yang akan dihapus.
-     */
-    async deleteLowongan(id) {
-        const { error } = await supabase
-            .from('lowongan_kerja')
-            .delete()
-            .eq('lowongan_id', id);
+    // seperti namanya 
+    async searchLowongan(filters = {}, page = 1) {
+        const queryParts = [
+            `select=*,perusahaan(nama_perusahaan),tipe_pekerjaan(nama_tipe)`,
 
-        if (error) {
-            console.error("Supabase delete error:", error);
-            throw new Error("Gagal menghapus lowongan.");
+            // Filter judul 
+            filters.searchTerm
+                ? `judul=ilike.*${encodeURIComponent(filters.searchTerm)}*`
+                : '',
+
+            // Lokasi
+            filters.searchLocation
+                ? `lokasi=ilike.*${encodeURIComponent(filters.searchLocation)}*`
+                : '',
+
+            // Tipe pekerjaan
+            filters.jobType && filters.jobType !== '0'
+                ? `tipe_pekerjaan_id=eq.${filters.jobType}`
+                : '',
+
+            // Rentang gaji (jika lengkap)
+            (filters.gajiMin && filters.gajiMax)
+                ? `and=(gaji_min.gte.${filters.gajiMin},gaji_max.lte.${filters.gajiMax})`
+                : '',
+
+            `order=tanggal_diposting.desc`,
+        ].filter(Boolean);
+
+        const query = queryParts.join('&');
+
+        try {
+            const response = await axios.get(
+                `${API_BASE_URL}/lowongan_kerja?${query}`,
+                {
+                    headers: {
+                        ...headers,
+                        Prefer: 'count=exact'
+                    }
+                }
+            );
+
+            const contentRange = response.headers['content-range'];
+            const count = contentRange ? parseInt(contentRange.split('/')[1], 10) : 0;
+
+            return {
+                data: response.data,
+                count,
+                error: null
+            };
+        } catch (error) {
+            console.error("Error fetching filtered jobs:", error.response?.data || error.message);
+            return { data: [], count: 0, error };
         }
+    }
 
-        return { message: "Lowongan berhasil dihapus" };
-    },
 
-    /**
-   * Mengambil semua lowongan milik satu perusahaan tertentu
-   * beserta jumlah pelamarnya. Ini untuk halaman dasbor.
-   * @param {number} perusahaanId - ID dari perusahaan yang sedang login.
-   * @returns {Promise<Array>} - Sebuah array berisi data lowongan.
-   */
-    async fetchLowonganByPerusahaan(perusahaanId) {
-        // Pastikan ada ID perusahaan sebelum menjalankan query
-        if (!perusahaanId) {
-            console.warn("fetchLowonganByPerusahaan dipanggil tanpa perusahaanId.");
-            return [];
-        }
 
-        // Query untuk mengambil data lowongan dan menghitung pelamar (kandidat)
-        const { data, error } = await supabase
-            .from('lowongan_kerja')
-            .select(`
-        lowongan_id,
-        judul,
-        lokasi,
-        status_aktif,
-        kandidat:lamaran(count) 
-      `)
-            .eq('perusahaan_id', perusahaanId)
-            .order('tanggal_diposting', { ascending: false });
-
-        if (error) {
-            console.error("Supabase error fetching jobs for company:", error);
-            throw new Error("Gagal mengambil data lowongan milik perusahaan.");
-        }
-
-        return data;
-    },
 };

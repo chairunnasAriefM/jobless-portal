@@ -22,7 +22,7 @@ const JobDetail = () => {
             setIsLoading(true);
             setError(null);
             try {
-                const data = await lowonganAPI.fetchLowonganById(id);
+                const data = await lowonganAPI.getLowonganKerjaById(id);
                 if (data) {
                     setJob(data);
                 } else {

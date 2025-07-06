@@ -38,8 +38,11 @@ const JobSearchResultsPage = () => {
         searchTerm: searchParams.get('kataKunci') || '',
         searchLocation: searchParams.get('lokasi') || '',
         jobType: searchParams.get('tipePekerjaan') || '0',
+        gajiMin: searchParams.get('gajiMin') || '',
+        gajiMax: searchParams.get('gajiMax') || '',
         sortBy: 'relevance',
     });
+
 
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
@@ -57,18 +60,21 @@ const JobSearchResultsPage = () => {
             kataKunci: filters.searchTerm,
             lokasi: filters.searchLocation,
             tipePekerjaan: filters.jobType,
+            gajiMin: filters.gajiMin,
+            gajiMax: filters.gajiMax,
             page: pageToFetch,
         }, { replace: true });
 
         try {
-            // PERBAIKAN UTAMA: Ambil 'data' dan 'count' dari response API
-            const { data, count, error: apiError } = await lowonganAPI.fetchLowongan(filters, pageToFetch);
+
+            const { data, count, error: apiError } = await lowonganAPI.searchLowongan(filters, pageToFetch);
 
             if (apiError) throw apiError;
 
             setJobs(data || []);
             setTotalCount(count || 0);
             setCurrentPage(pageToFetch);
+
 
         } catch (err) {
             setError("Gagal memuat data lowongan. Silakan coba lagi.");

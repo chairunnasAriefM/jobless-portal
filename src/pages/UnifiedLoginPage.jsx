@@ -5,6 +5,7 @@ import { Eye, EyeOff, User, Briefcase, ArrowRight, Loader2, ArrowLeft } from 'lu
 import { EmployerAuthAPI } from '../services/EmployerAuthAPI';
 import { JobSeekerAuthAPI } from '../services/JobSeekerAuthAPI';
 import useAuthStore from '../store/authStore';
+import { HashLink } from 'react-router-hash-link';
 
 //==================================================================
 // Komponen Panel Ilustrasi (Overlay)
@@ -50,7 +51,7 @@ const LoginForm = ({ title, subtitle, onSubmit, isLoading, apiError }) => {
         onSubmit(email, password);
     };
 
-    
+
 
     return (
         <div className="w-full h-full p-8 md:p-12 flex flex-col justify-center">
@@ -77,7 +78,7 @@ const LoginForm = ({ title, subtitle, onSubmit, isLoading, apiError }) => {
                     </button>
                 </div>
                 <p className="text-sm text-center text-slate-500">
-                    Belum punya akun? <Link to="/daftar-perusahaan" className="font-medium text-orange-600 hover:underline">Daftar di sini</Link>
+                    Belum punya akun? <HashLink to="/#signup" className="font-medium text-orange-600 hover:underline">Daftar di sini</HashLink>
                 </p>
             </form>
         </div>
@@ -135,7 +136,7 @@ const UnifiedLoginPage = () => {
 
     const isEmployerActive = activeForm === 'employer';
 
-   
+
 
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">

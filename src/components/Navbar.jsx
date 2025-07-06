@@ -286,7 +286,7 @@ const Navbar = () => {
                             timer: 1500,
                             showConfirmButton: false
                           });
-                          navigate('/');
+                          // navigate('/');
                         }
                       });
                     }}

@@ -173,7 +173,7 @@ const ManageKeahlianPage = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-slate-800">Kelola Keahlian</h1>
+            <h1 className="text-5xl font-bold text-slate-800">Kelola Keahlian</h1>
 
             <SkillForm
                 currentSkill={editingSkill}
