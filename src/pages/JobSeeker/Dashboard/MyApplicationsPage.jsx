@@ -92,7 +92,7 @@ const MyApplicationsPage = () => {
     }
 
     return (
-        <div className="bg-slate-50 win-w-screen pt-28 pb-12">
+        <div className="bg-slate-50 win-w-screen pt-20 pb-12">
             <div className="container mx-auto px-4 max-w-10xl">
                 <h1 className="text-4xl font-bold text-slate-800 mb-2">Riwayat Lamaran Saya</h1>
                 <p className="text-slate-500 mb-8">Lacak status semua pekerjaan yang telah Anda lamar di sini.</p>

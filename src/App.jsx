@@ -35,7 +35,7 @@ const JobSeekerHome = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerHo
 const JobSeekerProfilePage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerProfilePage"));
 // const JobSeekerLowonganPage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerLowongan"));
 const MyApplicationsPage = lazy(() => import("./pages/JobSeeker/Dashboard/MyApplicationsPage"));
-// const ApplicationDetailPage = lazy(() => import("./pages/Employer/Lowongan/Lamaran/ApplicationDetailPage"));
+const JobSeekerApplicationDetailPage = lazy(() => import("./pages/JobSeeker/Dashboard/ApplicationDetailPage"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
@@ -115,9 +115,7 @@ function App() {
             <Route path="profil" element={<JobSeekerProfilePage />} />
             <Route path="lowongan" element={<JobSearchResultsPage />} />
             <Route path="history-lamaran" element={<MyApplicationsPage />} />
-            {/* <Route path="lamaran-detail/:lamaranId" element={<ApplicationDetailPage />} /> */}
-            {/* <Route path="lowongan/baru" element={<JobFormPage />} />
-            <Route path="lowongan/edit/:id" element={<JobFormPage />} /> */}
+            <Route path="lamaran-detail/:id" element={<JobSeekerApplicationDetailPage />} />
           </Route>
         </Route>
 
