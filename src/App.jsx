@@ -33,7 +33,9 @@ const JobDetail = lazy(() => import("./pages/JobDetail"));
 const JobSeekerRegister = lazy(() => import("./pages/JobSeeker/Auth/JobSeekerRegister"));
 const JobSeekerHome = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerHome"));
 const JobSeekerProfilePage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerProfilePage"));
-const JobSeekerLowonganPage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerLowongan"));
+// const JobSeekerLowonganPage = lazy(() => import("./pages/JobSeeker/Dashboard/JobSeekerLowongan"));
+const MyApplicationsPage = lazy(() => import("./pages/JobSeeker/Dashboard/MyApplicationsPage"));
+// const ApplicationDetailPage = lazy(() => import("./pages/Employer/Lowongan/Lamaran/ApplicationDetailPage"));
 
 // perusahaan
 const EmployerHome = lazy(() => import("./pages/Employer/EmployerHome"));
@@ -41,7 +43,9 @@ import EmployerLoginPage from "./pages/Employer/EmployerLoginPage";
 import ProfilPerusahaanPage from "./pages/Employer/ProfilPerusahaanPage";
 import ManageJobsPage from "./pages/Employer/ManageJobsPage";
 import JobFormPage from './pages/Employer/JobFormPage';
-
+const DetailLowongan = lazy(() => import("./pages/Employer/Lowongan/ShowLowonganPage"));
+const ApplicationDetailPage = lazy(() => import("./pages/Employer/Lowongan/Lamaran/ApplicationDetailPage"));
+const ManageApplicantsPage = lazy(() => import("./pages/Employer/Lowongan/Lamaran/ManageApplicantsPage"));
 
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -96,8 +100,11 @@ function App() {
             <Route index element={<EmployerHome />} />
             <Route path="profil" element={<ProfilPerusahaanPage />} />
             <Route path="lowongan" element={<ManageJobsPage />} />
+            <Route path="lowongan/detail/:id" element={<DetailLowongan />} />
             <Route path="lowongan/baru" element={<JobFormPage />} />
             <Route path="lowongan/edit/:id" element={<JobFormPage />} />
+            <Route path="lowongan/:lowonganId/pelamar" element={<ManageApplicantsPage />} />
+            <Route path="lamaran-detail/:lamaranId" element={<ApplicationDetailPage />} />
           </Route>
         </Route>
 
@@ -107,6 +114,8 @@ function App() {
             <Route path="edit-profil" element={<JobSeekerProfilePage />} />
             <Route path="profil" element={<JobSeekerProfilePage />} />
             <Route path="lowongan" element={<JobSearchResultsPage />} />
+            <Route path="history-lamaran" element={<MyApplicationsPage />} />
+            {/* <Route path="lamaran-detail/:lamaranId" element={<ApplicationDetailPage />} /> */}
             {/* <Route path="lowongan/baru" element={<JobFormPage />} />
             <Route path="lowongan/edit/:id" element={<JobFormPage />} /> */}
           </Route>

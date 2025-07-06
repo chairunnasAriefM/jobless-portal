@@ -8,7 +8,7 @@ import useAuthStore from '../../store/authStore';
 import RichTextEditor from '../../components/forms/RichTextEditor';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { Loader2, Save, ArrowLeft } from 'lucide-react';
+import { Loader2, Save, ArrowLeft, Briefcase, Sparkles, FileText } from 'lucide-react';
 
 const MySwal = withReactContent(Swal);
 
@@ -20,6 +20,19 @@ const JOB_TYPES = [
     { tipe_pekerjaan_id: 4, nama_tipe: 'Magang' },
     { tipe_pekerjaan_id: 5, nama_tipe: 'Lepas' },
 ];
+
+// Komponen untuk setiap bagian form agar lebih rapi
+const FormSection = ({ title, icon, children }) => (
+    <section className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+        <div className="flex items-center border-b border-slate-200 pb-3 mb-6">
+            {React.cloneElement(icon, { className: "mr-3 text-orange-500" })}
+            <h2 className="text-xl font-bold text-slate-800">{title}</h2>
+        </div>
+        <div className="space-y-4">
+            {children}
+        </div>
+    </section>
+);
 
 const JobFormPage = () => {
     const { id } = useParams();
@@ -38,22 +51,21 @@ const JobFormPage = () => {
         status_aktif: true,
     });
 
-    // State untuk Keahlian (diambil dari API)
+    // State untuk Keahlian
     const [allSkills, setAllSkills] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
 
-    // State untuk UI
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState('');
 
-    // Mengambil data awal (sekarang hanya Keahlian dan data lowongan jika edit)
     const loadInitialData = useCallback(async () => {
         if (!user) return;
         try {
+            // Mengambil semua opsi keahlian dan data lowongan (jika edit)
             const [skills, jobData] = await Promise.all([
                 lowonganAPI.getAllKeahlian(),
-                isEditMode ? lowonganAPI.fetchLowonganById(id) : null
+                isEditMode ? lowonganAPI.getLowonganKerjaById(id) : null
             ]);
 
             setAllSkills(skills.map(s => ({ value: s.keahlian_id, label: s.nama_keahlian })) || []);
@@ -78,7 +90,6 @@ const JobFormPage = () => {
         loadInitialData();
     }, [loadInitialData]);
 
-
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         const finalValue = type === 'checkbox' ? checked : value;
@@ -93,7 +104,6 @@ const JobFormPage = () => {
         setSelectedSkills(selectedOptions || []);
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSaving(true);
@@ -107,7 +117,7 @@ const JobFormPage = () => {
         }
 
         const payload = {
-            lowongan_id: isEditMode ? id : undefined, // Sertakan ID hanya jika mode edit
+            lowongan_id: isEditMode ? parseInt(id, 10) : undefined,
             judul: formData.judul,
             lokasi: formData.lokasi,
             tipe_pekerjaan_id: Number(formData.tipe_pekerjaan_id),
@@ -141,7 +151,7 @@ const JobFormPage = () => {
     if (isLoading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-orange-500" size={32} /></div>;
 
     return (
-        <div className="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+        <div className="container mx-auto p-4 sm:p-6 md:p-8 max-w-6xl">
             <div className="flex items-center mb-6">
                 <Link to="/dashboard/perusahaan/lowongan" className="p-2 rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
                     <ArrowLeft size={24} />
@@ -150,12 +160,9 @@ const JobFormPage = () => {
                     {isEditMode ? 'Edit Lowongan Pekerjaan' : 'Buat Lowongan Baru'}
                 </h1>
             </div>
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-lg space-y-8">
-
-                {/* --- Bagian Informasi Utama --- */}
-                <section>
-                    <h2 className="text-xl font-semibold text-slate-700 border-b pb-3 mb-6">Informasi Utama</h2>
-                    <div className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-8">
+                <FormSection title="Informasi Utama" icon={<Briefcase />}>
+                    <div className="grid md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="judul" className="block text-sm font-medium text-slate-700 mb-1">Judul Posisi*</label>
                             <input type="text" id="judul" name="judul" value={formData.judul} onChange={handleChange} required className="input-style" placeholder="Contoh: Digital Marketing Specialist" />
@@ -165,11 +172,6 @@ const JobFormPage = () => {
                             <input type="text" id="lokasi" name="lokasi" value={formData.lokasi} onChange={handleChange} required className="input-style" placeholder="Contoh: Jakarta Selatan, atau Remote" />
                         </div>
                     </div>
-                </section>
-
-                {/* --- Bagian Detail Pekerjaan --- */}
-                <section>
-                    <h2 className="text-xl font-semibold text-slate-700 border-b pb-3 mb-6">Detail Pekerjaan</h2>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div>
                             <label htmlFor="tipe_pekerjaan_id" className="block text-sm font-medium text-slate-700 mb-1">Tipe Pekerjaan*</label>
@@ -182,50 +184,39 @@ const JobFormPage = () => {
                         </div>
                         <div>
                             <label htmlFor="gaji_min" className="block text-sm font-medium text-slate-700 mb-1">Gaji Minimum (Opsional)</label>
-                            <input type="number" id="gaji_min" name="gaji_min" value={formData.gaji_min} onChange={handleChange} className="input-style" placeholder="Contoh: 5000000" />
+                            <input type="number" id="gaji_min" name="gaji_min" value={formData.gaji_min || ''} onChange={handleChange} className="input-style" placeholder="Contoh: 5000000" />
                         </div>
                         <div>
                             <label htmlFor="gaji_max" className="block text-sm font-medium text-slate-700 mb-1">Gaji Maksimum (Opsional)</label>
-                            <input type="number" id="gaji_max" name="gaji_max" value={formData.gaji_max} onChange={handleChange} className="input-style" placeholder="Contoh: 8000000" />
+                            <input type="number" id="gaji_max" name="gaji_max" value={formData.gaji_max || ''} onChange={handleChange} className="input-style" placeholder="Contoh: 8000000" />
                         </div>
                     </div>
-                </section>
+                </FormSection>
 
-                {/* --- Bagian Keahlian --- */}
-                <section>
-                    <h2 className="text-xl font-semibold text-slate-700 border-b pb-3 mb-6">Keahlian yang Dibutuhkan</h2>
-                    <div>
-                        <label htmlFor="skills" className="block text-sm font-medium text-slate-700 mb-1">Pilih Keahlian</label>
-                        <Select
-                            id="skills"
-                            isMulti
-                            name="skills"
-                            options={allSkills}
-                            value={selectedSkills}
-                            onChange={handleSkillsChange}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            placeholder="Pilih atau ketik untuk mencari keahlian..."
-                            noOptionsMessage={() => "Tidak ada opsi"}
-                        />
-                    </div>
-                </section>
+                <FormSection title="Keahlian yang Dibutuhkan" icon={<Sparkles />}>
+                    <label htmlFor="skills" className="block text-sm font-medium text-slate-700 mb-1">Pilih Keahlian</label>
+                    <Select
+                        id="skills" isMulti name="skills" options={allSkills}
+                        value={selectedSkills} onChange={handleSkillsChange}
+                        className="basic-multi-select" classNamePrefix="select"
+                        placeholder="Pilih atau ketik untuk mencari keahlian..."
+                        noOptionsMessage={() => "Tidak ada opsi"}
+                    />
+                </FormSection>
 
-                {/* --- Bagian Deskripsi & Kualifikasi --- */}
-                <section>
+                <FormSection title="Deskripsi & Kualifikasi" icon={<FileText />}>
                     <div className="space-y-6">
                         <div>
-                            <label className="block text-xl font-semibold text-slate-700 mb-3">Deskripsi Pekerjaan</label>
+                            <label className="block text-base font-semibold text-slate-700 mb-2">Deskripsi Pekerjaan</label>
                             <RichTextEditor content={formData.deskripsi} onChange={(content) => handleEditorChange(content, 'deskripsi')} />
                         </div>
                         <div>
-                            <label className="block text-xl font-semibold text-slate-700 mb-3">Kualifikasi</label>
+                            <label className="block text-base font-semibold text-slate-700 mb-2">Kualifikasi</label>
                             <RichTextEditor content={formData.kualifikasi} onChange={(content) => handleEditorChange(content, 'kualifikasi')} />
                         </div>
                     </div>
-                </section>
+                </FormSection>
 
-                {/* --- Pengaturan Publikasi --- */}
                 <div className="pt-6 border-t border-slate-200 space-y-4">
                     <h2 className="text-xl font-semibold text-slate-700">Pengaturan Publikasi</h2>
                     <div className="flex items-center">

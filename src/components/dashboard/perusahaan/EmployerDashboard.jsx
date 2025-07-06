@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'; // DIPERBAIKI: Semua hook diimpor di sini
 import { Link } from 'react-router-dom';
-import { Plus, Users, Eye, MoreVertical, Loader2, AlertTriangle } from "lucide-react";
+import { Plus, Users, Eye, MoreVertical, Loader2, AlertTriangle, MapPin, Target } from "lucide-react";
 
 import useAuthStore from '../../../store/authStore'; // Pastikan path ini benar
 import { lowonganAPI } from '../../../services/lowonganAPI'; // Pastikan path ini benar
@@ -28,48 +28,52 @@ const WelcomeBanner = ({ user }) => (
 const JobRowCard = ({ job }) => {
   const candidateCount = job.kandidat?.[0]?.count || 0;
   const isActive = job.status_aktif;
+
+  // Komponen kecil untuk metrik Pelamar
+  const StatItem = ({ icon, value, label }) => (
+    <div className="flex flex-col items-center justify-center p-2 text-center">
+      <div className="flex items-center gap-1.5">
+        {icon}
+        <p className="text-base font-bold text-slate-700">{value}</p>
+      </div>
+      <p className="text-xs text-slate-500">{label}</p>
+    </div>
+  );
+
   return (
-    <div className="bg-white p-4 sm:p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-200 grid grid-cols-12 gap-4 items-center mb-4">
-      <div className="col-span-12 sm:col-span-5 flex items-center gap-4">
-        <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${isActive ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
-          {isActive ? "Aktif" : "Draft"}
-        </span>
+    <div className="bg-white p-4 rounded-xl shadow-sm hover:shadow-lg border border-slate-200 flex flex-col md:flex-row items-center gap-4 transition-all duration-300">
+
+      <div className="flex-grow flex items-center gap-4 w-full">
+        <div className="flex-shrink-0">
+          <span className={`w-3 h-3 rounded-full block ${isActive ? 'bg-green-500' : 'bg-slate-400'}`} title={isActive ? 'Aktif' : 'Draft/Ditutup'}></span>
+        </div>
         <div>
-          <Link to={`/lowongan/${job.lowongan_id}`} className="font-semibold text-slate-800 hover:text-orange-600">
+          <Link to={`/dashboard/perusahaan/lowongan/detail/${job.lowongan_id}`} className="font-semibold text-slate-800 hover:text-orange-600 transition-colors">
             {job.judul}
           </Link>
-          <p className="text-xs text-slate-500">{job.lokasi}</p>
+          <p className="text-sm text-slate-500 flex items-center">
+            <MapPin size={12} className="mr-1.5" />{job.lokasi}
+          </p>
         </div>
       </div>
-      <div className="col-span-12 sm:col-span-5 grid grid-cols-3 gap-2 text-center">
-        <div className="p-2">
-          <p className="flex items-center justify-center text-sm font-semibold text-slate-700">
-            <Users size={14} className="mr-1.5 text-slate-400" /> {candidateCount}
-          </p>
-          <p className="text-xs text-slate-500">Kandidat</p>
-        </div>
-        <div className="p-2">
-          <p className="flex items-center justify-center text-sm font-semibold text-slate-700">
-            <Eye size={14} className="mr-1.5 text-slate-400" /> -
-          </p>
-          <p className="text-xs text-slate-500">Dilihat</p>
-        </div>
-        <div className="p-2">
-          <p className="text-sm font-semibold text-slate-700">-</p>
-          <p className="text-xs text-slate-500">Matches</p>
-        </div>
+
+      <div className="flex-shrink-0 border-t md:border-t-0 md:border-x border-slate-200 px-4 md:px-6 w-full md:w-auto py-4 md:py-0">
+        <StatItem icon={<Users size={14} className="text-slate-400" />} value={candidateCount} label="Pelamar" />
       </div>
-      <div className="col-span-12 sm:col-span-2 flex justify-end items-center">
-        <Link to={`/dashboard/perusahaan/lowongan/edit/${job.lowongan_id}`} className="font-semibold text-orange-600 hover:bg-orange-50 px-4 py-2 rounded-lg text-sm transition-colors duration-200">
-          {isActive ? "Kelola" : "Lanjutkan"}
+
+      <div className="flex-shrink-0 flex items-center justify-end w-full md:w-auto">
+        <Link
+          to={`/dashboard/perusahaan/lowongan/edit/${job.lowongan_id}`}
+          className="bg-orange-50 text-orange-600 font-semibold py-2 px-4 rounded-lg hover:bg-orange-100 transition-colors text-sm"
+        >
+          Kelola
         </Link>
-        <button className="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-full">
-          <MoreVertical size={20} />
-        </button>
       </div>
+
     </div>
   );
 };
+
 
 const JobList = ({ jobs, isLoading, error }) => {
   if (isLoading) {

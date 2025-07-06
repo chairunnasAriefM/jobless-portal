@@ -147,6 +147,12 @@ const EmployerNavbar = () => {
                             >
                                 Lowongan
                             </NavLink>
+                            <NavLink
+                                to="/dashboard/pencari-kerja/history-lamaran"
+                                className={({ isActive }) => isActive ? activeLinkStyle : linkStyle}
+                            >
+                                Lamaran
+                            </NavLink>
                         </div>
                     </div>
 

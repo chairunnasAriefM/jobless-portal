@@ -155,7 +155,7 @@ const CompanyRegistrationPage = () => {
 
                     <p className="mt-8 text-center text-sm text-slate-600">
                         Sudah punya akun?
-                        <Link to="/login-perusahaan" className="font-medium text-orange-600 hover:text-orange-500"> Masuk di sini</Link>
+                        <Link to="/login" className="font-medium text-orange-600 hover:text-orange-500"> Masuk di sini</Link>
                     </p>
                 </div>
             </div>

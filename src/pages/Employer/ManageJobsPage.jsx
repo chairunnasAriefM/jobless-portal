@@ -1,57 +1,75 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, Search, PlusCircle, FileText, Trash2 } from 'lucide-react';
+import { Loader2, Search, PlusCircle, FileText, Trash2, Users, MapPin, Edit } from 'lucide-react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { lowonganAPI } from '../../services/lowonganAPI'; // Pastikan path ini benar
-import useAuthStore from '../../store/authStore'; // Aktifkan jika Anda pakai auth store
+import { lowonganAPI } from '../../services/lowonganAPI';
+import useAuthStore from '../../store/authStore';
 
-// Inisialisasi SweetAlert2 untuk notifikasi yang menarik
 const MySwal = withReactContent(Swal);
 
 
-/**
- * Komponen untuk menampilkan satu baris/kartu lowongan dalam daftar.
- * Menerima data 'job' dan fungsi 'onDelete' sebagai props.
- */
+
+
 const JobRow = ({ job, onDelete }) => {
     const candidateCount = job.kandidat?.[0]?.count || 0;
     const isActive = job.status_aktif;
 
+    // Komponen kecil untuk menampilkan statistik dengan ikon
+    const StatItem = ({ icon, value, label }) => (
+        <div className="flex flex-col items-center justify-center p-2 text-center">
+            <p className="flex items-center gap-1.5 text-base font-bold text-slate-700">
+                {icon}
+                {value}
+            </p>
+            <p className="text-xs text-slate-500">{label}</p>
+        </div>
+    );
+
     return (
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 grid grid-cols-12 gap-4 items-center hover:shadow-md transition-shadow duration-200">
-            {/* Info Lowongan */}
-            <div className="col-span-12 md:col-span-5">
-                <Link to={`/lowongan/${job.lowongan_id}`} className="font-semibold text-slate-800 hover:text-orange-600 transition-colors">{job.judul}</Link>
-                <p className="text-sm text-slate-500">{job.lokasi}</p>
+        // Layout utama menggunakan Flexbox yang lebih modern dan responsif
+        <div className="bg-white p-4 rounded-xl shadow-sm hover:shadow-lg border border-slate-200 flex flex-col md:flex-row items-center gap-4 transition-all duration-300">
+
+            {/* Bagian Kiri: Informasi Utama Lowongan */}
+            <div className="flex-grow flex items-center gap-4 w-full">
+                <div className="flex-shrink-0">
+                    {/* Indikator Status */}
+                    <span className={`w-3 h-3 rounded-full block ${isActive ? 'bg-green-500' : 'bg-slate-400'}`} title={isActive ? 'Aktif' : 'Ditutup'}></span>
+                </div>
+                <div>
+                    <Link to={`/dashboard/perusahaan/lowongan/detail/${job.lowongan_id}`} className="font-semibold text-slate-800 hover:text-orange-600 transition-colors">
+                        {job.judul}
+                    </Link>
+                    <p className="text-sm text-slate-500 flex items-center">
+                        <MapPin size={12} className="mr-1.5" />{job.lokasi}
+                    </p>
+                </div>
             </div>
 
-            {/* Status */}
-            <div className="col-span-4 md:col-span-2 text-center">
-                <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${isActive ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600'}`}>
-                    {isActive ? 'Aktif' : 'Ditutup'}
-                </span>
+            {/* Bagian Tengah: Statistik Pelamar */}
+            <div className="flex-shrink-0 border-t md:border-t-0 md:border-x border-slate-200 px-4 md:px-6 w-full md:w-auto py-4 md:py-0">
+                <StatItem icon={<Users size={14} className="text-slate-400" />} value={candidateCount} label="Pelamar" />
             </div>
 
-            {/* Jumlah Kandidat */}
-            <div className="col-span-4 md:col-span-2 text-center text-sm text-slate-600">{candidateCount} Pelamar</div>
-
-            {/* Tombol Aksi */}
-            <div className="col-span-4 md:col-span-3 flex justify-end items-center gap-2">
+            {/* Bagian Kanan: Tombol Aksi (Kelola & Hapus) */}
+            <div className="flex-shrink-0 flex items-center justify-end gap-2 w-full md:w-auto">
                 <Link
                     to={`/dashboard/perusahaan/lowongan/edit/${job.lowongan_id}`}
-                    className="font-semibold text-orange-600 hover:text-orange-700 text-sm px-3 py-2 rounded-md hover:bg-orange-50 transition-colors"
+                    title="Kelola Lowongan"
+                    className="inline-flex items-center bg-orange-50 text-orange-600 font-semibold py-2 px-4 rounded-lg hover:bg-orange-100 transition-colors text-sm"
                 >
-                    Kelola
+                    <Edit size={14} className="md:mr-2" />
+                    <span className="hidden md:inline">Kelola</span>
                 </Link>
                 <button
                     onClick={() => onDelete(job.lowongan_id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                     title="Hapus Lowongan"
+                    className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
                 >
                     <Trash2 size={16} />
                 </button>
             </div>
+
         </div>
     );
 };
@@ -139,7 +157,7 @@ const ManageJobsPage = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await lowonganAPI.deleteLowongan(jobId);
+                    await lowonganAPI.deleteLowonganKerja(jobId);
                     // Hapus dari state agar UI langsung update tanpa refresh
                     setAllJobs(prevJobs => prevJobs.filter(j => j.lowongan_id !== jobId));
                     MySwal.fire('Dihapus!', 'Lowongan telah dihapus.', 'success');
@@ -194,8 +212,8 @@ const ManageJobsPage = () => {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`${activeTab === tab
-                                    ? 'border-orange-500 text-orange-600'
-                                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                                ? 'border-orange-500 text-orange-600'
+                                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
                                 } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors focus:outline-none`}
                         >
                             {tab}

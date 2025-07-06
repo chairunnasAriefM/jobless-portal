@@ -22,8 +22,7 @@ const formatDatePosted = (dateString) => {
   return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
-// Komponen JobCard (sudah benar, tapi kita perbaiki href ke Link)
-const JobCard = ({ job }) => (
+const  JobCard = ({ job }) => (
   <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-200 flex flex-col h-full">
     <div className="flex justify-between items-start mb-3">
       <span className="text-xs text-gray-500 flex items-center">
@@ -78,16 +77,8 @@ const FeaturedJobs = () => {
         setLoading(true);
         setError(null);
 
-        // ====== PERBAIKAN UTAMA DI SINI ======
-        // 1. Panggil API dengan objek filter yang berisi 'limit'
-        // 2. Lakukan destructuring untuk mengambil properti 'data' dari hasil response
-        const { data, error: apiError } = await lowonganAPI.fetchLowongan({ limit: 6 });
-
-        // 3. Lakukan error handling dari Supabase
-        if (apiError) throw apiError;
-
-        // 4. Set state 'jobs' dengan 'data' (yang merupakan array)
-        setJobs(data || []); // Beri nilai default array kosong jika data null/undefined
+        const jobs = await lowonganAPI.fetchLowongan({ limit: 6 });
+        setJobs(jobs);
 
       } catch (err) {
         setError('Gagal memuat data lowongan. Silakan coba lagi nanti.');
@@ -98,7 +89,8 @@ const FeaturedJobs = () => {
     };
 
     getFeaturedJobs();
-  }, []); // Dependensi kosong agar hanya berjalan sekali saat komponen dimuat
+  }, []);
+
 
   return (
     <section id="find-jobs" className="py-16 bg-slate-50">

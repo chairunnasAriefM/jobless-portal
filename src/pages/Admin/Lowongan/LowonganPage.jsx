@@ -129,7 +129,7 @@ const ManageLowonganPage = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-slate-800">Kelola Lowongan</h1>
+            <h1 className="text-5xl font-bold text-slate-800">Kelola Lowongan</h1>
             <div className="bg-white p-4 rounded-xl shadow-lg border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="relative w-full md:max-w-md">
                     <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
