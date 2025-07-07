@@ -24,7 +24,7 @@ const Hero = () => {
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <a
-            href="/cari-lowongan-wizard" // Arahkan ke section pencarian nanti
+            href="/lowongan" // Arahkan ke section pencarian nanti
             className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
           >
             Cari Lowongan Sekarang
