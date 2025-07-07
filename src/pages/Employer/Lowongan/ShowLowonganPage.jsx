@@ -34,7 +34,7 @@ const InfoCard = ({ job }) => (
         <div>
             <p className="text-sm text-slate-500">Diposting</p>
             <p className="font-semibold text-slate-800 flex items-center gap-2">
-                <Calendar size={16} className="text-slate-400" /> {formatDatePosted(job.created_at)}
+                <Calendar size={16} className="text-slate-400" /> {formatDatePosted(job.tanggal_diposting)}
             </p>
         </div>
         <div>

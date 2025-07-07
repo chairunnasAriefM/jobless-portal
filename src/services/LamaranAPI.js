@@ -57,7 +57,7 @@ export const LamaranAPI = {
     async getApplicantsByJob(lowonganId) {
         if (!lowonganId) return [];
         try {
- 
+
             const selectQuery = `*,pengguna(nama_lengkap,email,nomor_telepon,profil_pencari_kerja(file_cv)),status_lamaran(nama_status),lowongan_kerja(judul)`;
 
             const response = await axios.get(
@@ -142,12 +142,12 @@ export const LamaranAPI = {
     async getApplicationDetails(lamaranId) {
         if (!lamaranId) return null;
         try {
-            // Query select yang kompleks untuk mengambil semua data relasi
+            // PERBAIKAN: Menambahkan 'perusahaan(nama_perusahaan)' di dalam 'lowongan_kerja'
             const selectQuery = `
                 lamaran_id,
                 tanggal_lamaran,
                 status_lamaran(*),
-                lowongan_kerja(*),
+                lowongan_kerja(*, perusahaan(nama_perusahaan)),
                 pelamar:pengguna(
                     user_id,
                     nama_lengkap,
@@ -185,4 +185,5 @@ export const LamaranAPI = {
             throw error;
         }
     },
+
 };
