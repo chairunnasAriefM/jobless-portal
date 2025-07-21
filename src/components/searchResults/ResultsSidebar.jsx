@@ -23,7 +23,6 @@ const ResultsSidebar = () => {
                 </ul>
                 <Link to="/blog" className="text-sm text-orange-600 hover:underline mt-3 block">Lihat Semua Artikel...</Link>
             </div>
-            {/* Anda bisa menambahkan blok lain di sidebar */}
         </aside>
     );
 };
