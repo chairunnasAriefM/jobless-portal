@@ -38,20 +38,6 @@ That’s it. Now open your browser and be amazed. Or mildly impressed. Either wo
 
 ---
 
-## 🤖 Project Structure (a.k.a. where stuff lives)
-
-```txt
-/src
-  /components  --> Your reusable job thingies
-  /pages       --> Main pages like Home, Jobs, etc.
-  /assets      --> Images, icons,
-  /services    --> Calling the API,
-  /layouts     --> layouts
-  App.jsx      --> App starts here, duh
-```
-
----
-
 ## 🤝 Contribution
 
 This is for **my team** (yes, you 👀), so:
@@ -74,10 +60,6 @@ This is for **my team** (yes, you 👀), so:
 
 ---
 
-## 🦄 Random Developer Quote
-
-> "It works on my machine." — Every developer ever
-
 ---
 
 ## 📢 Shoutouts
@@ -85,5 +67,7 @@ This is for **my team** (yes, you 👀), so:
 Thanks to **Vite** for being speedy, and to **React** for keeping us busy with hooks we didn’t ask for.
 
 ---
+
+
 
 
